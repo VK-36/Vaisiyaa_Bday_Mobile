@@ -49,9 +49,36 @@ body {
     display: none;
     margin-top: 40px;
     text-align: center;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 6px;
+}
+
+/* LINE */
+.banner-line {
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+/* TEXT STYLE */
+.line1 {
+    font-size: clamp(18px, 5vw, 28px);
+}
+
+.line2 {
+    font-size: clamp(22px, 6vw, 34px);
+    color: #ff4d6d;
+}
+
+/* ANIMATION */
+.banner-line span {
+    display: inline-block;
+    animation: pop 0.6s ease forwards;
+    opacity: 0;
+}
+
+@keyframes pop {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .letter {
@@ -200,26 +227,29 @@ body {
 <script>
 
 /* BANNER TEXT */
-const text = ["❤️ HAPPY BIRTHDAY ❤️", "VAISIYAA ❤️"];
 const banner = document.getElementById("banner");
 
-text.forEach((line, lineIndex) => {
+const line1 = "❤️ HAPPY BIRTHDAY ❤️";
+const line2 = "VAISIYAA ❤️";
 
-    const lineDiv = document.createElement("div");
-    lineDiv.style.width = "100%";
-    lineDiv.style.display = "flex";
-    lineDiv.style.justifyContent = "center";
-    lineDiv.style.gap = "6px";
-    lineDiv.style.marginBottom = "5px";
+function createAnimatedLine(text, className, delayStart = 0) {
+    const div = document.createElement("div");
+    div.className = "banner-line " + className;
 
-    line.split("").forEach((char, i) => {
+    text.split("").forEach((char, i) => {
+        const span = document.createElement("span");
+        span.textContent = char;
 
-        if (char === " ") {
-            const space = document.createElement("div");
-            space.style.width = "8px";
-            lineDiv.appendChild(space);
-            return;
-        }
+        span.style.animationDelay = (i * 0.05 + delayStart) + "s";
+
+        div.appendChild(span);
+    });
+
+    return div;
+}
+
+banner.appendChild(createAnimatedLine(line1, "line1", 0));
+banner.appendChild(createAnimatedLine(line2, "line2", 0.5));
 
         const div = document.createElement("div");
         div.className = "letter";
