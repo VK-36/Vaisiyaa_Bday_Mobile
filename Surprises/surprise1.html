@@ -200,23 +200,36 @@ body {
 <script>
 
 /* BANNER TEXT */
-const text = "❤️ HAPPY BIRTHDAY VAISIYAA ❤️";
+const text = ["❤️ HAPPY BIRTHDAY ❤️", "VAISIYAA ❤️"];
 const banner = document.getElementById("banner");
 
-text.split("").forEach((char, i) => {
-    if (char === " ") {
-        const space = document.createElement("div");
-        space.style.width = "8px";
-        banner.appendChild(space);
-        return;
-    }
+text.forEach((line, lineIndex) => {
 
-    const div = document.createElement("div");
-    div.className = "letter";
-    div.textContent = char;
-    div.style.animationDelay = (i * 0.1) + "s";
+    const lineDiv = document.createElement("div");
+    lineDiv.style.width = "100%";
+    lineDiv.style.display = "flex";
+    lineDiv.style.justifyContent = "center";
+    lineDiv.style.gap = "6px";
+    lineDiv.style.marginBottom = "5px";
 
-    banner.appendChild(div);
+    line.split("").forEach((char, i) => {
+
+        if (char === " ") {
+            const space = document.createElement("div");
+            space.style.width = "8px";
+            lineDiv.appendChild(space);
+            return;
+        }
+
+        const div = document.createElement("div");
+        div.className = "letter";
+        div.textContent = char;
+        div.style.animationDelay = ((i + lineIndex * 10) * 0.1) + "s";
+
+        lineDiv.appendChild(div);
+    });
+
+    banner.appendChild(lineDiv);
 });
 
 /* REVEAL FUNCTION */
