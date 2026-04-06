@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Surprise 1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+/* BASE STYLES */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    height: 100vh;
+}
+
+/* PAGE 1 - START SCREEN */
+.start-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+    width: 100%;
+    height: 100vh;
+}
+
+/* BUTTON */
+#revealBtn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 12px;
+    background: white;
+    color: #3a7bd5;
+    font-size: clamp(16px, 2vw, 22px);
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 2px 4px 0px #0f2d5f;
+}
+
+/* PAGE 2 - MAIN SCREEN */
+.main-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #ffb6c1; /* full pink background */
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* BANNERS */
+.banner {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-top: clamp(20px, 5vh, 40px);
+}
+
+.letter {
+    background: #ff4d6d;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: clamp(14px, 4vw, 22px);
+    transform-origin: top center;
+    animation: swing 2s infinite ease-in-out;
+}
+
+.letter:nth-child(even) { background: #ff85a2; }
+
+@keyframes swing {
+    0% { transform: rotate(-8deg); }
+    50% { transform: rotate(8deg); }
+    100% { transform: rotate(-8deg); }
+}
+
+/* POLAROIDS */
+.photos {
+    display: flex;
+    justify-content: center;
+    gap: clamp(8px, 4vw, 20px);
+    flex-wrap: wrap;
+    margin-top: clamp(40px, 8vh, 80px);
+}
+
+.polaroid {
+    width: clamp(100px, 15vw, 140px); /* small enough for mobile */
+    padding: 8px; /* white border size */
+    background: white; /* polaroid effect */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* subtle shadow */
+    animation: float 4s infinite ease-in-out;
+}
+
+.polaroid img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+@keyframes float {
+    50% { transform: translateY(-8px) rotate(var(--rotate)); }
+}
+
+.p1 { --rotate: -5deg; }
+.p2 { --rotate: 6deg; }
+.p3 { --rotate: -4deg; }
+
+/* BALLOONS */
+.balloons {
+    display: none;
+    width: 100%;
+    justify-content: space-around;
+    margin-top: clamp(50px, 10vh, 100px);
+    position: relative;
+}
+
+.balloon {
+    width: clamp(20px, 3.5vw, 30px);
+    height: clamp(35px, 5vw, 45px);
+    border-radius: 50%;
+    position: relative;
+    animation: floatUp 6s infinite ease-in;
+}
+
+.balloon::after {
+    content: "";
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 40px;
+    background: #444;
+}
+
+.balloon:nth-child(1) { background: red; }
+.balloon:nth-child(2) { background: blue; animation-duration: 7s; }
+.balloon:nth-child(3) { background: green; animation-duration: 5s; }
+
+@keyframes floatUp {
+    to { transform: translateY(-120vh); opacity: 0; }
+}
+
+/* POPPERS */
+.poppers {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.pop {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    position: absolute;
+    animation: burst 2s forwards;
+}
+
+@keyframes burst {
+    to { transform: translate(var(--x), var(--y)); opacity: 0; }
+}
+
+/* CONFETTI */
+.confetti {
+    position: fixed;
+    top: -10px;
+    width: 8px;
+    height: 14px;
+    opacity: 0.9;
+    animation: fall linear forwards;
+    z-index: 999;
+}
+
+@keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* BACK BUTTON */
+.back-btn {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    text-decoration: none;
+    background: #e6c86e;
+    padding: 12px 25px;
+    border-radius: 25px;
+    color: black;
+    font-weight: bold;
+    box-shadow: 3px 5px 0px #90b36b;
+    font-size: clamp(12px, 2vw, 18px);
+    display: none;
+}
+
+/* MEDIA QUERY */
+@media screen and (max-width: 600px) {
+    .balloons { margin-top: 40px; }
+}
+</style>
+</head>
+<body class="start-screen">
+
+<!-- PAGE 1 -->
+<button id="revealBtn">🎁 Tap to Reveal</button>
+
+<script>
+// Banner texts
+const desktopLine1 = "❤️HAPPY BIRTHDAY";
+const desktopLine2 = "VAISIYAA ❤️";
+
+const mobileLine1 = "❤️ HAPPY";
+const mobileLine2 = "BIRTHDAY";
+const mobileLine3 = "VAISIYAA ❤";
+
+// Function to create letters for banners
+function createBannerLetters(text, container){
+    container.innerHTML = "";
+    text.split("").forEach((char,i)=>{
+        if(char===" "){ const space=document.createElement("div"); space.style.width="4px"; container.appendChild(space); return;}
+        const div=document.createElement("div");
+        div.className="letter";
+        div.textContent=char;
+        div.style.animationDelay=(i*0.1)+"s";
+        container.appendChild(div);
+    });
+}
+
+// Click handler to reveal main screen
+document.getElementById("revealBtn").addEventListener("click", ()=>{
+    // Change body class to main-screen (makes entire background pink)
+    document.body.className = "main-screen";
+    document.body.innerHTML = `
+        <!-- BANNERS -->
+        <div class="banner" id="banner1"></div>
+        <div class="banner" id="banner2"></div>
+        <div class="banner" id="banner3"></div>
+
+        <!-- PHOTOS -->
+        <div class="photos">
+            <div class="polaroid p1"><img src="../images/photo1.jpg"></div>
+            <div class="polaroid p2"><img src="../images/photo2.jpg"></div>
+            <div class="polaroid p3"><img src="../images/photo6.jpg"></div>
+        </div>
+
+        <!-- BALLOONS -->
+        <div class="balloons">
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+        </div>
+
+        <!-- POPPERS -->
+        <div class="poppers"></div>
+
+        <!-- BACK BUTTON -->
+        <a href="../index.html" class="back-btn" id="backBtn">BACK ◀</a>
+    `;
+
+    const banner1=document.getElementById("banner1");
+    const banner2=document.getElementById("banner2");
+    const banner3=document.getElementById("banner3");
+
+    function setupBanner(){
+        if(window.innerWidth <= 600){
+            createBannerLetters(mobileLine1,banner1);
+            createBannerLetters(mobileLine2,banner2);
+            createBannerLetters(mobileLine3,banner3);
+            banner1.style.display="flex";
+            banner2.style.display="flex";
+            banner3.style.display="flex";
+        }else{
+            createBannerLetters(desktopLine1,banner1);
+            createBannerLetters(desktopLine2,banner2);
+            banner1.style.display="flex";
+            banner2.style.display="flex";
+            banner3.style.display="none";
+        }
+    }
+    setupBanner();
+    window.addEventListener("resize", setupBanner);
+
+    // Show balloons
+    document.querySelector(".balloons").style.display="flex";
+    document.getElementById("backBtn").style.display="block";
+
+    // POPPERS
+    function createPopper(x,y){
+        const container=document.querySelector(".poppers");
+        for(let i=0;i<15;i++){
+            const pop=document.createElement("div");
+            pop.classList.add("pop");
+            pop.style.left=x+"px";
+            pop.style.top=y+"px";
+            const angle=Math.random()*2*Math.PI;
+            const dist=Math.random()*100;
+            pop.style.setProperty("--x", Math.cos(angle)*dist+"px");
+            pop.style.setProperty("--y", Math.sin(angle)*dist+"px");
+            container.appendChild(pop);
+            setTimeout(()=>pop.remove(),1000);
+        }
+    }
+    setInterval(()=>{
+        createPopper(Math.random()*window.innerWidth, Math.random()*window.innerHeight);
+    },800);
+
+    // CONFETTI
+    function createConfetti(){
+        const colors=["#ff4d6d","#ffd93d","#6bcB77","#4d96ff","#ff85a2"];
+        const confetti=document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.left=Math.random()*window.innerWidth+"px";
+        confetti.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
+        const size=Math.random()*6+4;
+        confetti.style.width=size+"px";
+        confetti.style.height=size*1.5+"px";
+        const duration=Math.random()*3+3;
+        confetti.style.animationDuration=duration+"s";
+        document.body.appendChild(confetti);
+        setTimeout(()=>confetti.remove(),duration*1000);
+    }
+    setInterval(()=>{
+        for(let i=0;i<5;i++){ createConfetti(); }
+    },300);
+});
+</script>
+
+</body>
+</html>

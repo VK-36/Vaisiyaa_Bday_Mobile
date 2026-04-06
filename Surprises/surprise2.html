@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Surprise 2</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: #e9edf0;
+    font-family: 'Courier New', monospace;
+}
+
+/* CONTAINER */
+.container {
+    width: 90%;
+    height: 90vh;
+    margin: 40px auto;
+    background: #cfd8dc;
+    border-radius: 12px;
+    padding: 25px;
+    box-sizing: border-box;
+
+    display: flex;
+    gap: 30px;
+
+    overflow: hidden;
+}
+
+/* TEXT */
+.text-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    font-family: cursive;
+}
+
+.content {
+    margin-top: 20px;
+    font-size: 18px;
+    line-height: 1.8;
+
+    overflow-y: auto;
+    height: 100%;
+    padding-right: 10px;
+}
+
+/* SCROLLBAR */
+.content::-webkit-scrollbar {
+    width: 6px;
+}
+.content::-webkit-scrollbar-thumb {
+    background: #90a4ae;
+    border-radius: 10px;
+}
+
+/* CURSOR */
+#typingText::after {
+    content: "|";
+    animation: blink 1s infinite;
+}
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* VIDEO FIXED */
+.video {
+    width: 220px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.video video {
+    width: 100%;
+    max-height: 100%;
+    aspect-ratio: 9/16;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+/* OVERLAY */
+#playOverlay {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0,0,0,0.3);
+    border-radius: 12px;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.video {
+    position: relative;
+}
+
+#playOverlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* PLAY BUTTON */
+.play-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+/* BACK BUTTON (OUTSIDE CLEAN) */
+.back-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 999;
+
+    text-decoration: none;
+    background: #e6c86e;
+    padding: 12px 25px;
+    border-radius: 25px;
+    color: black;
+    font-weight: bold;
+    box-shadow: 3px 5px 0px #90b36b;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .container {
+        flex-direction: column;
+        height: 90vh;
+    }
+
+    .content {
+        height: 40vh;
+        text-align: center;
+    }
+
+    .video {
+        width: 100%;
+        height: auto;
+        justify-content: center;
+    }
+
+    .video video {
+        width: 70%;
+        max-height: none;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- TEXT -->
+    <div class="text-section">
+        <div class="title">To My Dearest Friend 💕</div>
+
+        <div class="content" id="contentBox">
+            <p id="typingText"></p>
+        </div>
+    </div>
+
+    <!-- VIDEO -->
+    <div class="video">
+        <video id="myVideo" autoplay muted playsinline>
+            <source src="../images/video.mp4" type="video/mp4">
+        </video>
+
+        <div id="playOverlay">
+            <div class="play-btn">▶</div>
+        </div>
+    </div>
+
+</div>
+
+<a href="../index.html" class="back-btn">BACK ◀</a>
+
+<script>
+const message = `Happy Birthday di Vaisiyaa! 🎉
+
+Having you in my life is one of the greatest blessings I could ever ask for.
+
+Your laughter, your kindness, and the way you make every moment brighter 
+mean more than words can say.
+
+I hope this year brings you endless happiness, unforgettable memories, 
+and all the love your heart can hold.
+
+Thank you for being you, and for always being there. 
+You deserve the world and more ❤️🎂`;
+
+let i = 0;
+
+function typeEffect() {
+    if (i < message.length) {
+        const char = message.charAt(i);
+        const text = document.getElementById("typingText");
+        const box = document.getElementById("contentBox");
+
+        text.innerHTML += (char === "\n") ? "<br>" : char;
+        i++;
+
+        box.scrollTop = box.scrollHeight;
+
+        let delay = Math.random() * 60 + 40;
+
+        if (char === ".") delay = 400;
+        else if (char === ",") delay = 200;
+        else if (char === "!" || char === "?") delay = 500;
+        else if (char === "\n") delay = 600;
+
+        setTimeout(typeEffect, delay);
+    }
+}
+
+window.onload = typeEffect;
+
+/* VIDEO LOGIC */
+const video = document.getElementById("myVideo");
+const overlay = document.getElementById("playOverlay");
+
+video.onended = () => overlay.classList.add("show");
+
+overlay.onclick = () => {
+    video.currentTime = 0;
+    video.play();
+    overlay.classList.remove("show");
+};
+</script>
+
+</body>
+</html>
