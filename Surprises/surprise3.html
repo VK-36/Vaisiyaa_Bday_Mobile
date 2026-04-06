@@ -125,26 +125,24 @@ body {
     left: 0;
     pointer-events: none;
     z-index: 999;
+    overflow: hidden;
 }
 
 .confetti {
     position: absolute;
     width: 8px;
-    height: 12px;
-    background: red;
-    top: 50%;
-    left: 50%;
-    opacity: 1;
+    height: 14px;
+    top: -20px;
+    opacity: 0.9;
+    animation: fall linear forwards;
 }
 
-@keyframes burst {
-    from {
-        transform: translate(-50%, -50%) rotate(0deg);
-        opacity: 1;
+@keyframes fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
     }
-    to {
-        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(720deg);
-        opacity: 0;
+    100% {
+        transform: translateY(110vh) rotate(720deg);
     }
 }
 
@@ -227,28 +225,22 @@ function launchConfetti() {
         const confetti = document.createElement("div");
         confetti.classList.add("confetti");
 
-        // random direction
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = 200 + Math.random() * 300;
+        // random horizontal position
+        confetti.style.left = Math.random() * 100 + "vw";
 
-        const x = Math.cos(angle) * distance + "px";
-        const y = Math.sin(angle) * distance + "px";
-
-        confetti.style.setProperty("--x", x);
-        confetti.style.setProperty("--y", y);
-
-        // colors
+        // random colors
         confetti.style.backgroundColor =
             ["#ff4d4d","#ffd11a","#4dff88","#4db8ff","#ff66cc"][Math.floor(Math.random()*5)];
 
-        // APPLY animation AFTER adding (important!)
+        // random fall speed
+        confetti.style.animationDuration = (2 + Math.random() * 3) + "s";
+
+        // slight delay for natural effect
+        confetti.style.animationDelay = Math.random() * 2 + "s";
+
         container.appendChild(confetti);
 
-        requestAnimationFrame(() => {
-            confetti.style.animation = "burst 1.2s ease-out forwards";
-        });
-
-        setTimeout(() => confetti.remove(), 1200);
+        setTimeout(() => confetti.remove(), 5000);
     }
 }
 
