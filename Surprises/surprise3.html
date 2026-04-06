@@ -124,7 +124,7 @@ body {
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 3;
+    z-index: 999;
 }
 
 .confetti {
@@ -134,12 +134,16 @@ body {
     background: red;
     top: 50%;
     left: 50%;
-    opacity: 0.9;
+    opacity: 1;
 }
 
 @keyframes burst {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+        opacity: 1;
+    }
     to {
-        transform: translate(var(--x), var(--y)) rotate(720deg);
+        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(720deg);
         opacity: 0;
     }
 }
@@ -220,26 +224,31 @@ function launchConfetti() {
     const container = document.getElementById("confetti-container");
 
     for (let i = 0; i < 120; i++) {
-        let confetti = document.createElement("div");
+        const confetti = document.createElement("div");
         confetti.classList.add("confetti");
 
-        let angle = Math.random() * 2 * Math.PI;
-        let distance = 300 + Math.random() * 300;
+        // random direction
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 200 + Math.random() * 300;
 
-        let x = Math.cos(angle) * distance + "px";
-        let y = Math.sin(angle) * distance + "px";
+        const x = Math.cos(angle) * distance + "px";
+        const y = Math.sin(angle) * distance + "px";
 
         confetti.style.setProperty("--x", x);
         confetti.style.setProperty("--y", y);
 
+        // colors
         confetti.style.backgroundColor =
             ["#ff4d4d","#ffd11a","#4dff88","#4db8ff","#ff66cc"][Math.floor(Math.random()*5)];
 
-        confetti.style.animation = "burst 1.5s ease-out forwards";
-
+        // APPLY animation AFTER adding (important!)
         container.appendChild(confetti);
 
-        setTimeout(() => confetti.remove(), 1500);
+        requestAnimationFrame(() => {
+            confetti.style.animation = "burst 1.2s ease-out forwards";
+        });
+
+        setTimeout(() => confetti.remove(), 1200);
     }
 }
 
