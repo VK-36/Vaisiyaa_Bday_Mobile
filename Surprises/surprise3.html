@@ -31,7 +31,6 @@ body {
     position: relative;
     z-index: 2;
     box-sizing: border-box;
-    transform: translateY(-20px);
 }
 
 /* TEXT */
@@ -206,6 +205,21 @@ function nextPage() {
 
     document.getElementById("polaroids").style.display = "block"; /* ✅ show only now */
     document.getElementById("backBtn").style.display = "block";
+}
+
+    function confetti() {
+    for (let j = 0; j < 40; j++) {
+        let c = document.createElement("div");
+        c.className = "confetti";
+
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.background = ["#ff7e5f","#feb47b","#ffcc00","#66ffcc","#ff6699"][Math.floor(Math.random()*5)];
+        c.style.animationDuration = (Math.random()*2+2)+"s";
+
+        document.body.appendChild(c);
+
+        setTimeout(() => c.remove(), 4000);
+    }
 }
 </script>
 
