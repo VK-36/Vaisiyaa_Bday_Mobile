@@ -1,0 +1,175 @@
+body {
+    font-family: Arial;
+    text-align: center;
+    background: #fff0f5;
+    margin: 0;
+}
+
+.title {
+    margin-top: 50px;
+    color: #ff4d88;
+}
+
+/* GRID CENTERING */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 180px);
+    gap: 40px;
+    justify-content: center;
+    margin-top: 60px;
+}
+
+/* ENVELOPE STYLE */
+.card {
+    width: 180px;
+    height: 120px;
+    background: #fff;
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+/* Envelope flap */
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-left: 90px solid transparent;
+    border-right: 90px solid transparent;
+    border-top: 60px solid #ffb6c1;
+}
+
+/* Text inside */
+.card a {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    right: 0;
+    text-decoration: none;
+    color: #ff4d88;
+    font-weight: bold;
+}
+
+/* Opened tag */
+.card.opened span {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    font-size: 12px;
+    color: gray;
+}
+
+/* BACKGROUND */
+.photo-page {
+    background: #a9c0cf;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* HANDWRITTEN TEXT */
+.love-text {
+    font-family: Arial, sans-serif;
+    font-size: 60px;
+
+    position: absolute;
+    top: 30px;
+
+    width: 100%;        
+    left: 0;            
+
+    text-align: center;
+}
+
+/* HEART */
+.heart {
+    position: absolute;
+    right: 200px;
+    top: 200px;
+    font-size: 40px;
+}
+
+/* FLOWER */
+.flower {
+    position: absolute;
+    left: 50px;
+    bottom: 100px;
+    width: 120px;
+    opacity: 0.8;
+}
+
+/* POLAROIDS */
+.photos {
+    position: relative;
+    top: 200px;
+}
+
+/* COMMON STYLE */
+.polaroid {
+    width: 260px;
+    background: white;
+    padding: 12px;
+    position: absolute;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.polaroid img {
+    width: 100%;
+}
+
+/* POSITIONS */
+.p1 {
+    left: 250px;
+    transform: rotate(-5deg);
+}
+
+.p2 {
+    left: 650px;
+    transform: rotate(8deg);
+}
+
+.p3 {
+    left: 1000px;
+    transform: rotate(-12deg);
+}
+
+/* TEXT ON PHOTO */
+.polaroid p {
+    text-align: center;
+    margin-top: 8px;
+    font-weight: bold;
+}
+
+/* BACK BUTTON */
+.back-btn {
+    position: absolute;
+    right: 100px;
+    bottom: 80px;
+    text-decoration: none;
+    background: #e6c86e;
+    padding: 12px 25px;
+    border-radius: 25px;
+    color: black;
+    font-weight: bold;
+    box-shadow: 3px 5px 0px #90b36b;
+}
+
+/* LETTER 2 TITLE - Playfair Display */
+.simple-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    text-align: center;
+    margin-top: 50px;
+    letter-spacing: 1px;
+    color: #222;
+}
+
+/* Photos section */
+.photos2 {
+    position: relative;
+    margin-top: 80px;
+    height: 350px;   
+}
