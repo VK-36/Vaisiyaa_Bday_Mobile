@@ -108,20 +108,21 @@ body {
 /* BALLOONS */
 .balloons {
     display: none;
+    position: absolute;
+    bottom: -100px;
     width: 100%;
     justify-content: space-around;
-    margin-top: clamp(50px, 10vh, 100px);
-    position: relative;
 }
 
 .balloon {
-    width: clamp(20px, 3.5vw, 30px);
-    height: clamp(35px, 5vw, 45px);
+    width: 35px;
+    height: 50px;
     border-radius: 50%;
     position: relative;
     animation: floatUp 6s infinite ease-in;
 }
 
+/* STRING */
 .balloon::after {
     content: "";
     position: absolute;
@@ -132,7 +133,7 @@ body {
     height: 40px;
     background: #444;
 }
-
+    
 .balloon:nth-child(1) { background: red; }
 .balloon:nth-child(2) { background: blue; animation-duration: 7s; }
 .balloon:nth-child(3) { background: green; animation-duration: 5s; }
