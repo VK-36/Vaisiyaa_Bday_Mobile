@@ -30,7 +30,6 @@ body {
     text-align: left;
     position: relative;
     z-index: 2;
-    box-sizing: border-box;
 }
 
 /* TEXT */
@@ -38,9 +37,7 @@ body {
     opacity: 0;
     animation: fadeIn 0.5s forwards;
     margin-bottom: 10px;
-    text-align: left;
     font-size: 16px;
-    line-height: 1.5;
 }
 
 @keyframes fadeIn {
@@ -90,7 +87,7 @@ body {
     text-decoration: none;
 }
 
-/* POLAROIDS (ONLY PAGE 2) */
+/* POLAROIDS */
 .polaroid-container {
     position: fixed;
     width: 100%;
@@ -115,28 +112,47 @@ body {
     width: 100%;
 }
 
-/* 6 POLAROIDS POSITIONS */
 #p1 { top: 2%; left: 5%; transform: rotate(-10deg); }
 #p2 { top: 2%; right: 5%; transform: rotate(8deg); }
-#p5 { bottom: 2%; left: 5%; transform: rotate(3deg); }
+#p5 { bottom: 5%; left: 2%; transform: rotate(3deg); }
 
+/* CONFETTI BURST */
+#confetti-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 3;
+}
 
-/* MOBILE */
-@media (max-width: 768px) {
-    .container {
-        width: 90%;
-    }
+.confetti {
+    position: absolute;
+    width: 8px;
+    height: 12px;
+    background: red;
+    top: 50%;
+    left: 50%;
+    opacity: 0.9;
+}
 
-    .polaroid {
-        width: 90px;
+@keyframes burst {
+    to {
+        transform: translate(var(--x), var(--y)) rotate(720deg);
+        opacity: 0;
     }
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- POLAROIDS (ONLY PAGE 2) -->
+<!-- CONFETTI -->
+<div id="confetti-container"></div>
+
+<!-- POLAROIDS -->
 <div id="polaroids" class="polaroid-container">
     <div class="polaroid" id="p1"><img src="../images/img1.jpg"></div>
     <div class="polaroid" id="p2"><img src="../images/img2.jpg"></div>
@@ -199,27 +215,43 @@ document.addEventListener("keydown", e => { if (e.key === "Enter") showLine(); }
 
 window.onload = showLine;
 
+/* CONFETTI BURST FUNCTION */
+function launchConfetti() {
+    const container = document.getElementById("confetti-container");
+
+    for (let i = 0; i < 120; i++) {
+        let confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+
+        let angle = Math.random() * 2 * Math.PI;
+        let distance = 300 + Math.random() * 300;
+
+        let x = Math.cos(angle) * distance + "px";
+        let y = Math.sin(angle) * distance + "px";
+
+        confetti.style.setProperty("--x", x);
+        confetti.style.setProperty("--y", y);
+
+        confetti.style.backgroundColor =
+            ["#ff4d4d","#ffd11a","#4dff88","#4db8ff","#ff66cc"][Math.floor(Math.random()*5)];
+
+        confetti.style.animation = "burst 1.5s ease-out forwards";
+
+        container.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 1500);
+    }
+}
+
+/* NEXT PAGE */
 function nextPage() {
     document.getElementById("page1").style.display = "none";
     document.getElementById("page2").style.display = "block";
 
-    document.getElementById("polaroids").style.display = "block"; /* ✅ show only now */
+    document.getElementById("polaroids").style.display = "block";
     document.getElementById("backBtn").style.display = "block";
-}
 
-    function confetti() {
-    for (let j = 0; j < 40; j++) {
-        let c = document.createElement("div");
-        c.className = "confetti";
-
-        c.style.left = Math.random() * 100 + "vw";
-        c.style.background = ["#ff7e5f","#feb47b","#ffcc00","#66ffcc","#ff6699"][Math.floor(Math.random()*5)];
-        c.style.animationDuration = (Math.random()*2+2)+"s";
-
-        document.body.appendChild(c);
-
-        setTimeout(() => c.remove(), 4000);
-    }
+    launchConfetti(); // 🎉 burst here
 }
 </script>
 
