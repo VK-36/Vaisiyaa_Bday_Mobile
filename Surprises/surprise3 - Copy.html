@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Birthday Surprise</title>
+
+<style>
+body {
+    margin: 0;
+    background: #d9dde1;
+    font-family: 'Courier New', monospace;
+}
+
+/* MAIN LAYOUT */
+.main {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* 🔥 no vertical centering */
+    padding-top: 100px;
+}
+
+/* CONTAINER */
+.container {
+    width: 85%;
+    max-width: 340px;
+    background: #e8e6e1;
+    padding: 18px 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    z-index: 2;
+    box-sizing: border-box;
+}
+
+/* TEXT */
+.text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+#lineContainer div:first-child {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#lineContainer div:not(:first-child) {
+    text-align: left;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+    margin-bottom: 8px;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+/* BUTTON */
+.next-btn {
+    display: block;
+    margin-top: 15px;
+    text-align: right;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* FINAL TEXT (SOFT GLOW) */
+.final {
+    display: none;
+    font-size: 1.3rem;
+    color: #ffcc33;
+    text-shadow: 0 0 4px rgba(255,204,51,0.4);
+}
+
+/* BACK BUTTON */
+.back-btn {
+    display: none;
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    background: #e6c86e;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* FLOATING POLAROIDS (SAFE ZONE) */
+.polaroid {
+    position: absolute;
+    width: 85px;
+    background: white;
+    padding: 5px;
+    border-radius: 6px;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+    animation: float 4s ease-in-out infinite;
+}
+
+.polaroid img {
+    width: 100%;
+}
+
+/* FLOAT */
+@keyframes float {
+    50% { transform: translateY(-10px) rotate(var(--r)); }
+}
+
+/* SAFE POSITIONS (🔥 no overlap with card) */
+.p1 { top: 20px; left: 10px; --r:-8deg; }
+.p2 { top: 20px; right: 10px; --r:8deg; }
+.p3 { bottom: 40px; left: 15px; --r:-5deg; }
+
+
+/* CONFETTI */
+#confetti {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.confetti {
+    position: absolute;
+    width: 6px;
+    height: 10px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- FLOATING PHOTOS -->
+<div id="photos">
+    <div class="polaroid p1"><img src="images/photo3.jpg"></div>
+    <div class="polaroid p2"><img src="images/photo4.jpg"></div>
+    <div class="polaroid p3"><img src="images/photo5.jpg"></div>
+</div>
+
+<div class="main">
+
+    <div class="container">
+
+        <!-- PAGE 1 -->
+        <div id="page1" class="text">
+            <div id="lineContainer">
+                <div>Happy Birthday Bestie! 🎉</div>
+            </div>
+
+            <div id="hint">Tap to read...</div>
+            <div id="endMessage" style="display:none;">Press Next →</div>
+
+            <span class="next-btn" onclick="showFinal()">Next</span>
+        </div>
+
+        <!-- PAGE 2 -->
+        <div id="page2" class="final">
+            <p>Once Again Wishing You A <br>Very Happy Birthday ❤️</p>
+        </div>
+
+    </div>
+
+</div>
+
+<a href="index.html" class="back-btn" id="backBtn">BACK ◀</a>
+
+<div id="confetti"></div>
+
+<script>
+const lines = [
+    "You have a sparkle that makes everything feel lighter",
+    "You’ve been my constant support and happiness",
+    "You stood by me when I needed someone",
+    "You are truly special to me"
+];
+
+let i = 0;
+
+document.addEventListener("click", () => {
+    if (i < lines.length) {
+        const div = document.createElement("div");
+        div.textContent = lines[i];
+        document.getElementById("lineContainer").appendChild(div);
+        i++;
+
+        if (i === lines.length) {
+            document.getElementById("hint").style.display = "none";
+            document.getElementById("endMessage").style.display = "block";
+        }
+    }
+});
+
+function showFinal() {
+    document.getElementById("page1").style.display = "none";
+    document.getElementById("page2").style.display = "block";
+
+    document.getElementById("photos").classList.add("page2");
+
+    document.getElementById("backBtn").style.display = "block";
+
+    confetti();
+}
+
+function confetti() {
+    const container = document.getElementById("confetti");
+
+    for (let i = 0; i < 40; i++) {
+        const c = document.createElement("div");
+        c.classList.add("confetti");
+
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.background = ["#ff7e5f","#feb47b","#ffcc00","#66ffcc","#ff6699"][Math.floor(Math.random()*5)];
+        c.style.animationDuration = (Math.random()*2 + 2) + "s";
+
+        container.appendChild(c);
+
+        setTimeout(() => c.remove(), 4000);
+    }
+}
+</script>
+
+</body>
+</html>

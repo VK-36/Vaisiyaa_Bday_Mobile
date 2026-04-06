@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surprise 2</title>
+
+<style>
+body {
+    margin: 0;
+    background: #e9edf0;
+    font-family: 'Courier New', monospace;
+}
+
+/* CARD */
+.container {
+    width: 92%;
+    height: 85vh;
+    margin: 20px auto 60px auto;;
+    background: #cfd8dc;
+    border-radius: 16px;
+    padding: 15px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* TITLE */
+.title {
+    text-align: center;
+    font-size: 20px;
+    font-family: cursive;
+}
+
+/* TEXT AREA (60%) */
+.content {
+    height: 60%;
+    overflow-y: auto;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-top: 10px;
+}
+
+/* CURSOR */
+#typingText::after {
+    content: "|";
+    animation: blink 1s infinite;
+}
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* VIDEO AREA (40%) */
+.video {
+    height: 40%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* VIDEO */
+.video video {
+    height: 100%;
+    aspect-ratio: 9/16;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+/* OVERLAY */
+#playOverlay {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+#playOverlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* PLAY BUTTON */
+.play-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.4);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 22px;
+    color: white;
+    cursor: pointer;
+}
+
+/* BACK BUTTON */
+.back-btn {
+    position: fixed;
+    bottom: 10px;
+    right: 20px;
+
+    background: #e6c86e;
+    padding: 10px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="title">To My Dearest Friend 💕</div>
+
+    <div class="content" id="box">
+        <p id="typingText"></p>
+    </div>
+
+    <div class="video">
+        <video id="video" autoplay muted playsinline>
+            <source src="../images/video.mp4" type="video/mp4">
+        </video>
+
+        <div id="playOverlay">
+            <div class="play-btn">▶</div>
+        </div>
+    </div>
+
+</div>
+
+<a href="../index.html" class="back-btn">BACK ◀</a>
+
+<script>
+const message = `Happy Birthday di Vaisiyaa! 🎉
+
+Having you in my life is one of the greatest blessings I could ever ask for.
+
+Your laughter, your kindness, and the way you make every moment brighter mean more than words can say.
+
+I hope this year brings you endless happiness, unforgettable memories, and all the love your heart can hold.
+
+Thank you for being you, and for always being there. You deserve the world and more ❤️🎂`;
+
+let i = 0;
+const text = document.getElementById("typingText");
+const box = document.getElementById("box");
+
+function type() {
+    if (i < message.length) {
+        const char = message[i];
+
+        text.innerHTML += (char === "\n") ? "<br>" : char;
+        i++;
+
+        box.scrollTop = box.scrollHeight;
+
+        let delay = Math.random() * 60 + 40;
+
+        if (char === ".") delay = 400;
+        else if (char === ",") delay = 200;
+        else if (char === "!" || char === "?") delay = 500;
+        else if (char === "\n") delay = 600;
+
+        setTimeout(type, delay);
+    }
+}
+
+type();
+
+/* VIDEO */
+const video = document.getElementById("video");
+const overlay = document.getElementById("playOverlay");
+
+video.onended = () => overlay.classList.add("show");
+
+overlay.onclick = () => {
+    video.currentTime = 0;
+    video.play();
+    overlay.classList.remove("show");
+};
+</script>
+
+</body>
+</html>
