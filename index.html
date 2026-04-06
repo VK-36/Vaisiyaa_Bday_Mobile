@@ -3,12 +3,18 @@
 <head>
     <title>Vaisiyaa Bday</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             background: #fff0f5;
             margin: 0;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
         }
 
         .title {
@@ -24,37 +30,40 @@
             opacity: 0.8;
         }
 
-        /* GRID LAYOUT */
+        /* MAIN LAYOUT */
         .grid {
-            display: grid;
-            grid-template-areas:
-                "top"
-                "bottom";
-            justify-items: center;
-            gap: 50px;
-            margin: 60px 20px;
-        }
-
-        .top { grid-area: top; }
-
-        .bottom {
-            grid-area: bottom;
             display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px; /* equal vertical spacing */
+            margin: 30px 20px;
         }
 
-        /* ENVELOPE STYLE */
+        /* Bottom row */
+        .bottom {
+            display: flex;
+            justify-content: center;
+            gap: 40px; /* equal spacing between bottom cards */
+            flex-wrap: wrap;
+        }
+
+        /* CARD STYLE */
         .card {
             width: 180px;
-            height: 120px;
+            height: 100px;
             background: #fff;
             position: relative;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
             cursor: pointer;
             overflow: hidden;
+
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+
+            padding-bottom: 15px;
+
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
@@ -69,57 +78,67 @@
             border-top: 60px solid #ffb6c1;
         }
 
-        /* Text inside */
-        .card a {
-            position: absolute;
-            bottom: 15px;
-            left: 0;
-            right: 0;
-            text-decoration: none;
+        /* Text */
+        .card span {
             color: #ff4d88;
             font-weight: bold;
+            z-index: 1;
         }
 
-        /* Hover effect */
+        /* Hover */
         .card:hover {
             transform: translateY(-8px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.25);
         }
 
-        /* MEDIA QUERIES */
+        /* Responsive */
         @media (max-width: 768px) {
-            .title { font-size: 1.8rem; }
-            .instruction { font-size: 0.95rem; }
-            .bottom { gap: 30px; }
+            .bottom {
+                gap: 30px;
+            }
         }
 
         @media (max-width: 480px) {
-            .title { font-size: 1.5rem; margin-top: 30px; }
-            .instruction { font-size: 0.85rem; }
-            .bottom { flex-direction: column; gap: 20px; }
+            .title {
+                font-size: 1.5rem;
+                margin-top: 30px;
+            }
+
+            .instruction {
+                font-size: 0.85rem;
+            }
+
+            .bottom {
+                flex-direction: column;
+                gap: 25px;
+            }
         }
     </style>
 </head>
+
 <body>
 
 <h1 class="title">For My Bestieee 💕</h1>
 <p class="instruction">Click any envelope to open</p>
 
 <div class="grid">
-    <!-- Top envelope -->
-    <div class="card top" onclick="goToPage('Surprises/surprise1.html')">
-        <a href="#">Surprise 1</a>
+
+    <!-- Top -->
+    <div class="card" onclick="goToPage('Surprises/surprise1.html')">
+        <span>Surprise 1</span>
     </div>
 
-    <!-- Bottom envelopes -->
+    <!-- Bottom -->
     <div class="bottom">
         <div class="card" onclick="goToPage('Surprises/surprise2.html')">
-            <a href="#">Surprise 2</a>
+            <span>Surprise 2</span>
         </div>
+
         <div class="card" onclick="goToPage('Surprises/surprise3.html')">
-            <a href="#">Surprise 3</a>
+            <span>Surprise 3</span>
         </div>
     </div>
+
 </div>
 
 <script>
