@@ -108,6 +108,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* subtle shadow */
     animation: float 5s infinite ease-in-out;
+    will-change: transform;
 }
 
 .polaroid img {
@@ -116,16 +117,25 @@ body {
 }
 
 @keyframes float {
-    0% {
-        transform: translateY(0) rotate(var(--rotate));
-    }
-    50% {
-        transform: translateY(-15px) rotate(var(--rotate));
-    }
-    100% {
+0% {
         transform: translateY(0) rotate(var(--rotate));
     }
 
+    25% {
+        transform: translateY(-10px) rotate(calc(var(--rotate) + 8deg)); /* tilt right */
+    }
+
+    50% {
+        transform: translateY(-15px) rotate(var(--rotate)); /* back to normal */
+    }
+
+    75% {
+        transform: translateY(-10px) rotate(calc(var(--rotate) - 4deg)); /* slight left */
+    }
+
+    100% {
+        transform: translateY(0) rotate(var(--rotate)); /* original */
+    }
 }
 
 .p1 { --rotate: -6deg; }
