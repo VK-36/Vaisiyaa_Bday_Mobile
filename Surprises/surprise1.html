@@ -117,19 +117,19 @@ body {
 
 @keyframes float {
     0% {
-        transform: translateY(0) rotate(var(--rotate));
+        transform: translateY(0) rotate(0deg);
     }
     50% {
-        transform: translateY(-15px) rotate(var(--rotate));
+        transform: translateY(-15px) rotate(0deg);
     }
     100% {
-        transform: translateY(0) rotate(var(--rotate));
+        transform: translateY(0) rotate(0deg);
     }
 }
 
-.p1 { --rotate: -6deg; } 
-.p2 { --rotate: 8deg; } 
-.p3 { --rotate: -6deg; }
+.p1 { transform: rotate(-6deg); } 
+.p2 { transform: rotate(8deg); } 
+.p3 { transform: rotate(-6deg); }
     
 /* BALLOONS */
 .balloons {
