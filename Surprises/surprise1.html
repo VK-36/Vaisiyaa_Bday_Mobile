@@ -108,7 +108,6 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* subtle shadow */
     animation: float 5s infinite ease-in-out;
-    will-change: transform;
 }
 
 .polaroid img {
@@ -117,9 +116,7 @@ body {
 }
 
 @keyframes float {
-    0%   { transform: translateY(0px) rotate(var(--rotate)); }
-    50%  { transform: translateY(-8px) rotate(var(--rotate)); }
-    100% { transform: translateY(0px) rotate(var(--rotate)); }
+    50%  { transform: translateY(-15x) rotate(var(--rotate)); }
 }
 
 .p1 { --rotate: -2deg; } 
