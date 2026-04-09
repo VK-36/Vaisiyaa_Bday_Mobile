@@ -118,23 +118,23 @@ body {
 
 @keyframes float {
 0% {
-        transform: translateY(0) rotate(var(--rotate));
+        transform: translateY(0) rotate(0deg); /* ORIGINAL */
     }
 
     25% {
-        transform: translateY(-10px) rotate(calc(var(--rotate) + 8deg)); /* tilt right */
+        transform: translateY(-10px) rotate(10deg); /* tilt right */
     }
 
     50% {
-        transform: translateY(-15px) rotate(var(--rotate)); /* back to normal */
+        transform: translateY(-15px) rotate(0deg); /* back to normal */
     }
 
     75% {
-        transform: translateY(-10px) rotate(calc(var(--rotate) - 4deg)); /* slight left */
+        transform: translateY(-10px) rotate(-6deg); /* slight left */
     }
 
     100% {
-        transform: translateY(0) rotate(var(--rotate)); /* original */
+        transform: translateY(0) rotate(0deg); /* ORIGINAL again */
     }
 }
 
