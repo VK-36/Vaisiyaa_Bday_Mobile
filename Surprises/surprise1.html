@@ -150,8 +150,9 @@ body {
     background: #444;
 }
 
-.balloon:nth-child(2) { animation-duration: 7s; }
-.balloon:nth-child(3) { animation-duration: 5s; }
+.balloon:nth-child(1) { background: red; }
+.balloon:nth-child(2) { background: blue; animation-duration: 7s; }
+.balloon:nth-child(3) { background: green; animation-duration: 5s; }
 
 @keyframes floatUp {
     to { transform: translateY(-120vh); opacity: 0; }
@@ -185,8 +186,8 @@ body {
     width: 8px;
     height: 14px;
     animation: fall linear forwards;
-    z-index: 1;
-    will-change: transform;
+    z-index: 999;
+    opacity: 0.9;
 }
 
 @keyframes fall {
@@ -293,19 +294,21 @@ document.getElementById("revealBtn").addEventListener("click", ()=>{
     setupBanner();
     window.addEventListener("resize", setupBanner);
 
+     // Show balloons
     document.querySelector(".balloons").style.display="flex";
+    document.getElementById("backBtn").style.display="block";
 
     // POPPERS
     function createPopper(x,y){
         const container=document.querySelector(".poppers");
-        for(let i=0;i<12;i++){
+        for(let i=0;i<15;i++){
             const pop=document.createElement("div");
             pop.classList.add("pop");
             pop.style.left=x+"px";
             pop.style.top=y+"px";
 
             const angle=Math.random()*2*Math.PI;
-            const dist=Math.random()*80;
+            const dist=Math.random()*100;
 
             pop.style.setProperty("--x", Math.cos(angle)*dist+"px");
             pop.style.setProperty("--y", Math.sin(angle)*dist+"px");
