@@ -54,6 +54,20 @@ body {
     justify-content: center;
     gap: 6px;
     margin-top: clamp(20px, 5vh, 40px);
+    position: relative;
+}
+
+.banner::before {
+    content: "";
+    position: absolute;
+    top: 18px; /* adjust to align with letters */
+    left: 5%;
+    width: 90%;
+    height: 30px;
+
+    border-top: 3px solid #5a3e2b; /* rope color */
+
+    border-radius: 50%; /* makes it curved like a real string */
 }
 
 .letter {
@@ -64,6 +78,8 @@ body {
     font-size: clamp(14px, 4vw, 22px);
     transform-origin: top center;
     animation: swing 2s infinite ease-in-out;
+    position: relative;
+    top: 10px;
 }
 
 .letter:nth-child(even) { background: #ff85a2; }
