@@ -94,14 +94,16 @@ body {
 .photos {
     display: flex;
     justify-content: center;
-    gap: clamp(8px, 4vw, 20px);
-    flex-wrap: wrap;
-    margin-top: clamp(40px, 8vh, 80px);
+    gap: 10px;
+    flex-wrap: nowrap;
+    width: 100%;
+    max-width: 300px;         /* 🔒 LOCKED container width */
+    margin: 40px auto 0;      /* center it */
 }
 
 .polaroid {
-    width: clamp(100px, 15vw, 140px); /* small enough for mobile */
-    padding: 8px; /* white border size */
+    width: 80px;
+    padding: 5px; /* white border size */
     background: white; /* polaroid effect */
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* subtle shadow */
@@ -211,7 +213,7 @@ body {
     box-shadow: 3px 5px 0px #90b36b;
     font-size: clamp(12px, 2vw, 18px);
     display: none;
-    z-index: 1000;
+    z-index: 9999;
 }
 
 /* MEDIA QUERY */
