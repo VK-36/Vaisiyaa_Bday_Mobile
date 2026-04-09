@@ -116,7 +116,15 @@ body {
 }
 
 @keyframes float {
-    50%  { transform: translateY(-15px) rotate(var(--rotate)); }
+    0% {
+        transform: translateY(0) rotate(var(--rotate));
+    }
+    50% {
+        transform: translateY(-15px) rotate(var(--rotate));
+    }
+    100% {
+        transform: translateY(0) rotate(var(--rotate));
+    }
 }
 
 .p1 { --rotate: -2deg; } 
