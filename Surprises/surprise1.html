@@ -125,7 +125,8 @@ body {
 .balloons {
     display: none;
     position: absolute;
-    bottom: -100px;
+    bottom: 0;
+    z-index: 10;
     width: 100%;
     justify-content: space-around;
 }
@@ -150,9 +151,6 @@ body {
     background: #444;
 }
 
-.balloon:nth-child(1) { background: red; }
-.balloon:nth-child(2) { background: blue; animation-duration: 7s; }
-.balloon:nth-child(3) { background: green; animation-duration: 5s; }
 
 @keyframes floatUp {
     to { transform: translateY(-120vh); opacity: 0; }
@@ -297,6 +295,21 @@ document.getElementById("revealBtn").addEventListener("click", ()=>{
      // Show balloons
     document.querySelector(".balloons").style.display="flex";
     document.getElementById("backBtn").style.display="block";
+    const colors = [
+    "#ff4d6d", "#ffd93d", "#6bcB77",
+    "#4d96ff", "#ff85a2", "#ff9f1c",
+    "#9b5de5", "#00bbf9"
+];
+
+document.querySelectorAll(".balloon").forEach(balloon => {
+    // random color
+    balloon.style.backgroundColor =
+        colors[Math.floor(Math.random() * colors.length)];
+
+    // random speed (optional but nice)
+    balloon.style.animationDuration =
+        (Math.random() * 3 + 4) + "s";
+});
 
     // POPPERS
     function createPopper(x,y){
