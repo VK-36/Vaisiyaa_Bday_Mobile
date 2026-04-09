@@ -117,15 +117,11 @@ body {
 }
 
 @keyframes float {
-    0%   { transform: translateY(0px); }
-    50%  { transform: translateY(-8px); }
-    100% { transform: translateY(0px); }
+ 50% { transform: translateY(-1px) rotate(var(--rotate)); }
 
 }
 
-.p1 { animation-delay: 0s; }
-.p2 { animation-delay: 1s; }
-.p3 { animation-delay: 2s; }
+.p1 { --rotate: -2deg; } .p2 { --rotate: 3deg; } .p3 { --rotate: -2deg; }
 
 /* BALLOONS */
 .balloons {
@@ -202,8 +198,8 @@ body {
 /* BACK BUTTON */
 .back-btn {
     position: fixed;
-    right: 30px;
-    bottom: 30px;
+    right: 40px;
+    bottom: 40px;
     text-decoration: none;
     background: #e6c86e;
     padding: 12px 25px;
