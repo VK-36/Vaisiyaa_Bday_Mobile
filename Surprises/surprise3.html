@@ -112,12 +112,25 @@ body {
     width: 100%;
 }
 
-#p1 { top: 2%; left: 5%; transform: rotate(-10deg); animation: popInPolaroid 0.8s ease forwards; animation-delay: 0.3s; }
-#p5 { top: 2%; right: 5%; transform: rotate(8deg); animation: popInPolaroid 0.8s ease forwards; animation-delay: 0.8s; }
-#p2 { bottom: 5%; left: 2%; transform: rotate(3deg); animation: popInPolaroid 0.8s ease forwards; animation-delay: 1.3s; }
+#p1 { top: 2%; left: 5%; transform: rotate(-10deg); opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 0.3s; }
+#p5 { top: 2%; right: 5%; transform: rotate(8deg); opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 0.8s; }
+#p2 { bottom: 5%; left: 2%; transform: rotate(3deg); opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 1.3s; }
 
+@keyframes popInPolaroid {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(var(--rotate));
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.2) rotate(var(--rotate));
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(var(--rotate));
+    }
+}
     
-
 /* CONFETTI BURST */
 #confetti-container {
     position: fixed;
