@@ -106,6 +106,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* subtle shadow */
     animation: float 4s infinite ease-in-out;
+    will-change: transform;
 }
 
 .polaroid img {
@@ -114,7 +115,10 @@ body {
 }
 
 @keyframes float {
-    50% { transform: translateY(-1px) rotate(var(--rotate)); }
+    0%   { transform: translateY(0px) rotate(var(--rotate)); }
+    50%  { transform: translateY(-4px) rotate(var(--rotate)); }
+    100% { transform: translateY(0px) rotate(var(--rotate)); }
+
 }
 
 .p1 { --rotate: -0.5deg; }
@@ -207,6 +211,7 @@ body {
     box-shadow: 3px 5px 0px #90b36b;
     font-size: clamp(12px, 2vw, 18px);
     display: none;
+    z-index: 1000;
 }
 
 /* MEDIA QUERY */
