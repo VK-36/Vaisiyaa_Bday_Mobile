@@ -255,7 +255,11 @@ function launchConfetti() {
 
         container.appendChild(confetti);
 
-        setTimeout(() => confetti.remove(), 5000);
+        const totalTime = (parseFloat(confetti.style.animationDuration) +
+                   parseFloat(confetti.style.animationDelay)) * 1000;
+
+
+        setTimeout(() => confetti.remove(), totalTime);
     }
 }
 
