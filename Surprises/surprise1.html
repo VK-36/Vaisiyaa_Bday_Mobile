@@ -122,10 +122,10 @@ body {
     100% { transform: translateY(0px); }
 }
 
-.p1 { animation-delay: 0s; }
-.p2 { animation-delay: 1s; }
-.p3 { animation-delay: 2s; }
-
+.p1 { --rotate: -2deg; } 
+.p2 { --rotate: 4deg; } 
+.p3 { --rotate: -2deg; }
+    
 /* BALLOONS */
 .balloons {
     display: none;
@@ -201,8 +201,8 @@ body {
 /* BACK BUTTON */
 .back-btn {
     position: fixed;
-    right: 50px;
-    bottom: 50px;
+    right: clamp(12px, 4vw, 24px);
+    bottom: clamp(12px, 4vh, 24px);
     text-decoration: none;
     background: #e6c86e;
     padding: 12px 25px;
