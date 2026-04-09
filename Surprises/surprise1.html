@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <title>Surprise 1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-/* BASE STYLES */
+* { box-sizing: border-box; }
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    overflow-x: hidden;
-    height: 100vh;
 }
 
-/* PAGE 1 - START SCREEN */
+/* START SCREEN */
 .start-screen {
     display: flex;
     justify-content: center;
@@ -21,6 +21,18 @@ body {
     background: linear-gradient(135deg, #3a7bd5, #00d2ff);
     width: 100%;
     height: 100vh;
+}
+
+/* MAIN SCREEN */
+.main-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #ffb6c1;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
 }
 
 /* BUTTON */
@@ -36,17 +48,6 @@ body {
     box-shadow: 2px 4px 0px #0f2d5f;
 }
 
-/* PAGE 2 - MAIN SCREEN */
-.main-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #ffb6c1; /* full pink background */
-    min-height: 100vh;
-    overflow: hidden;
-    position: relative;
-}
-
 /* BANNERS */
 .banner {
     display: none;
@@ -60,14 +61,12 @@ body {
 .banner::before {
     content: "";
     position: absolute;
-    top: 18px; /* adjust to align with letters */
+    top: 18px;
     left: 5%;
     width: 90%;
     height: 30px;
-
-    border-top: 3px solid #5a3e2b; /* rope color */
-
-    border-radius: 50%; /* makes it curved like a real string */
+    border-top: 3px solid #5a3e2b;
+    border-radius: 50%;
 }
 
 .letter {
@@ -90,23 +89,21 @@ body {
     100% { transform: rotate(-8deg); }
 }
 
-/* POLAROIDS */
+/* PHOTOS */
 .photos {
     display: flex;
     justify-content: center;
     gap: 10px;
-    flex-wrap: nowrap;
-    width: 100%;
-    max-width: 300px;         /* 🔒 LOCKED container width */
-    margin: 40px auto 0;      /* center it */
+    max-width: 300px;
+    margin: 40px auto 0;
 }
 
 .polaroid {
     width: 80px;
-    padding: 5px; /* white border size */
-    background: white; /* polaroid effect */
+    padding: 5px;
+    background: white;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* subtle shadow */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     animation: float 5s infinite ease-in-out;
     will-change: transform;
 }
@@ -124,7 +121,6 @@ body {
 .p2 { --rotate: 2deg; }
 .p3 { --rotate: -4deg; }
 
-    
 /* BALLOONS */
 .balloons {
     display: none;
@@ -140,9 +136,9 @@ body {
     border-radius: 50%;
     position: relative;
     animation: floatUp 6s infinite ease-in;
+    will-change: transform;
 }
 
-/* STRING */
 .balloon::after {
     content: "";
     position: absolute;
@@ -153,10 +149,9 @@ body {
     height: 40px;
     background: #444;
 }
-    
-.balloon:nth-child(1) { background: red; }
-.balloon:nth-child(2) { background: blue; animation-duration: 7s; }
-.balloon:nth-child(3) { background: green; animation-duration: 5s; }
+
+.balloon:nth-child(2) { animation-duration: 7s; }
+.balloon:nth-child(3) { animation-duration: 5s; }
 
 @keyframes floatUp {
     to { transform: translateY(-120vh); opacity: 0; }
@@ -176,6 +171,7 @@ body {
     border-radius: 50%;
     position: absolute;
     animation: burst 2s forwards;
+    will-change: transform;
 }
 
 @keyframes burst {
@@ -188,9 +184,9 @@ body {
     top: -10px;
     width: 8px;
     height: 14px;
-    opacity: 0.9;
     animation: fall linear forwards;
-    z-index: 999;
+    z-index: 1;
+    will-change: transform;
 }
 
 @keyframes fall {
@@ -202,29 +198,26 @@ body {
     position: fixed;
     right: 20px;
     bottom: 40px;
-    text-decoration: none;
     background: #e6c86e;
     padding: 12px 25px;
     border-radius: 25px;
     color: black;
     font-weight: bold;
+    text-decoration: none;
     box-shadow: 3px 5px 0px #90b36b;
-
-}
-
-/* MEDIA QUERY */
-@media screen and (max-width: 600px) {
-    .balloons { margin-top: 40px; }
+    z-index: 9999;
+    transform: translateZ(0);
 }
 </style>
 </head>
-<body class="start-screen">
 
-<!-- PAGE 1 -->
-<button id="revealBtn">🎁 Tap to Reveal</button>
+<body>
+<div id="app" class="start-screen">
+    <button id="revealBtn">🎁 Tap to Reveal</button>
+</div>
 
 <script>
-// Banner texts
+// Banner text
 const desktopLine1 = "❤️HAPPY BIRTHDAY";
 const desktopLine2 = "VAISIYAA ❤️";
 
@@ -232,11 +225,15 @@ const mobileLine1 = "❤️ HAPPY";
 const mobileLine2 = "BIRTHDAY";
 const mobileLine3 = "VAISIYAA ❤";
 
-// Function to create letters for banners
 function createBannerLetters(text, container){
     container.innerHTML = "";
     text.split("").forEach((char,i)=>{
-        if(char===" "){ const space=document.createElement("div"); space.style.width="4px"; container.appendChild(space); return;}
+        if(char===" "){
+            const space=document.createElement("div");
+            space.style.width="4px";
+            container.appendChild(space);
+            return;
+        }
         const div=document.createElement("div");
         div.className="letter";
         div.textContent=char;
@@ -245,104 +242,105 @@ function createBannerLetters(text, container){
     });
 }
 
-// Click handler to reveal main screen
+const app = document.getElementById("app");
+
 document.getElementById("revealBtn").addEventListener("click", ()=>{
-    // Change body class to main-screen (makes entire background pink)
-    document.body.className = "main-screen";
-    document.body.innerHTML = `
-        <!-- BANNERS -->
+    app.className = "main-screen";
+
+    app.innerHTML = `
         <div class="banner" id="banner1"></div>
         <div class="banner" id="banner2"></div>
         <div class="banner" id="banner3"></div>
 
-        <!-- PHOTOS -->
         <div class="photos">
             <div class="polaroid p1"><img src="../images/photo1.jpg"></div>
             <div class="polaroid p2"><img src="../images/photo2.jpg"></div>
             <div class="polaroid p3"><img src="../images/photo6.jpg"></div>
         </div>
 
-        <!-- BALLOONS -->
         <div class="balloons">
             <div class="balloon"></div>
             <div class="balloon"></div>
             <div class="balloon"></div>
         </div>
 
-        <!-- POPPERS -->
         <div class="poppers"></div>
 
-        <!-- BACK BUTTON -->
-        <a href="../index.html" class="back-btn" id="backBtn">BACK ◀</a>
+        <a href="../index.html" class="back-btn">BACK ◀</a>
     `;
 
-    const banner1=document.getElementById("banner1");
-    const banner2=document.getElementById("banner2");
-    const banner3=document.getElementById("banner3");
+    const b1 = document.getElementById("banner1");
+    const b2 = document.getElementById("banner2");
+    const b3 = document.getElementById("banner3");
 
     function setupBanner(){
         if(window.innerWidth <= 600){
-            createBannerLetters(mobileLine1,banner1);
-            createBannerLetters(mobileLine2,banner2);
-            createBannerLetters(mobileLine3,banner3);
-            banner1.style.display="flex";
-            banner2.style.display="flex";
-            banner3.style.display="flex";
-        }else{
-            createBannerLetters(desktopLine1,banner1);
-            createBannerLetters(desktopLine2,banner2);
-            banner1.style.display="flex";
-            banner2.style.display="flex";
-            banner3.style.display="none";
+            createBannerLetters(mobileLine1,b1);
+            createBannerLetters(mobileLine2,b2);
+            createBannerLetters(mobileLine3,b3);
+            b1.style.display="flex";
+            b2.style.display="flex";
+            b3.style.display="flex";
+        } else {
+            createBannerLetters(desktopLine1,b1);
+            createBannerLetters(desktopLine2,b2);
+            b1.style.display="flex";
+            b2.style.display="flex";
+            b3.style.display="none";
         }
     }
+
     setupBanner();
     window.addEventListener("resize", setupBanner);
 
-    // Show balloons
     document.querySelector(".balloons").style.display="flex";
-    document.getElementById("backBtn").style.display="block";
 
     // POPPERS
     function createPopper(x,y){
         const container=document.querySelector(".poppers");
-        for(let i=0;i<15;i++){
+        for(let i=0;i<12;i++){
             const pop=document.createElement("div");
             pop.classList.add("pop");
             pop.style.left=x+"px";
             pop.style.top=y+"px";
+
             const angle=Math.random()*2*Math.PI;
-            const dist=Math.random()*100;
+            const dist=Math.random()*80;
+
             pop.style.setProperty("--x", Math.cos(angle)*dist+"px");
             pop.style.setProperty("--y", Math.sin(angle)*dist+"px");
+
             container.appendChild(pop);
             setTimeout(()=>pop.remove(),1000);
         }
     }
+
     setInterval(()=>{
         createPopper(Math.random()*window.innerWidth, Math.random()*window.innerHeight);
-    },800);
+    },1000);
 
     // CONFETTI
     function createConfetti(){
         const colors=["#ff4d6d","#ffd93d","#6bcB77","#4d96ff","#ff85a2"];
-        const confetti=document.createElement("div");
-        confetti.classList.add("confetti");
-        confetti.style.left=Math.random()*window.innerWidth+"px";
-        confetti.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
+        const c=document.createElement("div");
+
+        c.className="confetti";
+        c.style.left=Math.random()*window.innerWidth+"px";
+        c.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
+
         const size=Math.random()*6+4;
-        confetti.style.width=size+"px";
-        confetti.style.height=size*1.5+"px";
-        const duration=Math.random()*3+3;
-        confetti.style.animationDuration=duration+"s";
-        document.body.appendChild(confetti);
-        setTimeout(()=>confetti.remove(),duration*1000);
+        c.style.width=size+"px";
+        c.style.height=size*1.5+"px";
+        c.style.animationDuration=(Math.random()*3+3)+"s";
+
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(),4000);
     }
+
     setInterval(()=>{
-        for(let i=0;i<5;i++){ createConfetti(); }
-    },300);
+        for(let i=0;i<3;i++) createConfetti();
+    },500);
 });
 </script>
-
 </body>
 </html>
