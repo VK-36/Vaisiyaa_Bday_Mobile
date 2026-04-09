@@ -105,7 +105,7 @@ body {
     background: white; /* polaroid effect */
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* subtle shadow */
-    animation: float 4s infinite ease-in-out;
+    animation: float 5s infinite ease-in-out;
     will-change: transform;
 }
 
@@ -115,15 +115,15 @@ body {
 }
 
 @keyframes float {
-    0%   { transform: translateY(0px) rotate(var(--rotate)); }
-    50%  { transform: translateY(-4px) rotate(var(--rotate)); }
-    100% { transform: translateY(0px) rotate(var(--rotate)); }
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
 
 }
 
-.p1 { --rotate: -0.5deg; }
-.p2 { --rotate: 1deg; }
-.p3 { --rotate: -0.5deg; }
+.p1 { animation-delay: 0s; }
+.p2 { animation-delay: 1s; }
+.p3 { animation-delay: 2s; }
 
 /* BALLOONS */
 .balloons {
