@@ -150,7 +150,7 @@ body {
 .balloon {
     width: 35px;
     height: 50px;
-    border-radius: 50% 50% 45% 45%;
+    border-radius: 50% ;
     position: relative;
     animation: floatUp 6s infinite ease-in;
 }
@@ -166,6 +166,9 @@ body {
     background: #444;
 }
 
+.balloon:nth-child(1) { background: red; }
+.balloon:nth-child(2) { background: blue; animation-duration: 7s; }
+.balloon:nth-child(3) { background: green; animation-duration: 5s; }
 
 @keyframes floatUp {
     to { transform: translateY(-120vh); opacity: 0; }
