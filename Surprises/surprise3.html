@@ -112,9 +112,26 @@ body {
     width: 100%;
 }
 
-#p1 { --rotate: -5deg; top: 2%; left: 5%; transform: rotate(-10deg); opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 0.3s; }
-#p5 { --rotate: 7deg; top: 2%; right: 5%; transform: rotate(8deg); opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 0.8s; }
-#p2 { --rotate: -3deg; bottom: 5%; left: 2%; transform: rotate(3deg); opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 1.3s; width: 180px; }
+/* PAGE 1 POSITIONS */
+#polaroids-page1 .p1 { --rotate: -10deg; top: 5%; left: 4%; opacity: 0; animation: fadeInPolaroid 1s ease forwards; animation-delay: 0.3s; }
+#polaroids-page1 .p2 { --rotate: 8deg; top: 20%; right: 4%; opacity: 0; animation: fadeInPolaroid 1s ease forwards; animation-delay: 0.8s; }
+#polaroids-page1 .p3 { --rotate: 5deg; bottom: 5%; left: 4%; width: 240px; opacity: 0; animation: fadeInPolaroid 1s ease forwards; animation-delay: 1.3s; }
+
+@keyframes fadeInPolaroid {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9) rotate(0deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(var(--rotate));
+    }
+}
+
+/* PAGE 2 POSITIONS */
+#polaroids-page2 .p1 { --rotate: -5deg; top: 5%; left: 4%; opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 0.3s; }
+#polaroids-page2 .p3 { --rotate: 7deg; top: 20%; right: 4%; opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 0.8s; }
+#polaroids-page2 .p2 { --rotate: -3deg; bottom: 5%; left: 4%; width: 240px; opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 1.3s; }
 
 @keyframes popInPolaroid {
     0% {
@@ -130,6 +147,7 @@ body {
         transform: scale(1) rotate(var(--rotate));
     }
 }
+
     
 /* CONFETTI BURST */
 #confetti-container {
@@ -170,10 +188,18 @@ body {
 <div id="confetti-container"></div>
 
 <!-- POLAROIDS -->
-<div id="polaroids" class="polaroid-container">
-    <div class="polaroid" id="p1"><img src="../images/img1.jpg"></div>
-    <div class="polaroid" id="p5"><img src="../images/photo4.jpg"></div>
-    <div class="polaroid" id="p2"><img src="../images/img2.jpg"></div>
+<div id="polaroids-page1" class="polaroid-container">
+    <div class="polaroid p1"><img src="../images/photo3.jpg"></div>
+    <div class="polaroid p2"><img src="../images/photo4.jpg"></div>
+    <div class="polaroid p3"><img src="../images/photo5.jpg"></div>
+</div>
+
+<!-- PAGE 2 POLAROIDS -->
+<div id="polaroids-page2" class="polaroid-container">
+    <div class="polaroid p1"><img src="../images/img1.jpg"></div>
+    <div class="polaroid p2"><img src="../images/img2.jpg"></div>
+    <div class="polaroid p3"><img src="../images/img3.jpg"></div>
+
 </div>
 
 <div class="container">
