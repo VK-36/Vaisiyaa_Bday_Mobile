@@ -191,6 +191,15 @@ overlay.onclick = () => {
     video.play();
     overlay.classList.remove("show");
 };
+
+let typingStarted = false;
+
+video.addEventListener("timeupdate", () => {
+    if (video.currentTime >= 13 && !typingStarted) {
+        typingStarted = true;
+        typeEffect();
+    }
+});
 </script>
 
 </body>
