@@ -113,9 +113,9 @@ body {
 }
 
 /* PAGE 1 POSITIONS */
-#polaroids-page1 .p1 { --rotate: -10deg; top: 2%; left: 5%; opacity: 0; animation: fadeInPolaroid 1s ease forwards; animation-delay: 0.3s; width: 80px; }
-#polaroids-page1 .p2 { --rotate: 8deg; top: 2%; right: 5%; opacity: 0; animation: fadeInPolaroid 1s ease forwards; animation-delay: 0.8s; width: 80px; }
-#polaroids-page1 .p3 { --rotate: 5deg; bottom: 5%; left: 2%; opacity: 0; animation: fadeInPolaroid 1s ease forwards; animation-delay: 1.3s; }
+#polaroids-page1 .p1 { --rotate: -10deg; top: 5%; left: 4%; opacity: 0; animation: fadeInPolaroid 1s ease forwards; animation-delay: 0.3s; width: 80px; }
+#polaroids-page1 .p2 { --rotate: 8deg; top: 20%; right: 4%; opacity: 0; animation: fadeInPolaroid 1s ease forwards; animation-delay: 0.8s; width: 80px; }
+#polaroids-page1 .p3 { --rotate: 5deg; bottom: 5%; left: 4%; width: 240px; opacity: 0; animation: fadeInPolaroid 1s ease forwards; animation-delay: 1.3s; }
 
 @keyframes fadeInPolaroid {
     from {
@@ -129,9 +129,9 @@ body {
 }
 
 /* PAGE 2 POSITIONS */
-#polaroids-page2 .p1 { --rotate: -5deg; top: 2%; left: 5%; transform: rotate(-10deg); opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 0.3s; }
-#polaroids-page2 .p3 {  --rotate: 7deg; top: 2%; right: 5%; transform: rotate(8deg); opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 0.8s; }
-#polaroids-page2 .p2 { --rotate: -3deg; bottom: 5%; left: 2%; transform: rotate(3deg); opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 1.3s; width: 180px; }
+#polaroids-page2 .p1 { --rotate: -5deg; top: 5%; left: 4%; opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 0.3s; }
+#polaroids-page2 .p3 { --rotate: 7deg; top: 20%; right: 4%; opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 0.8s; }
+#polaroids-page2 .p2 { --rotate: -3deg; bottom: 5%; left: 4%; width: 240px; opacity: 0; animation: popInPolaroid 0.8s ease forwards; animation-delay: 1.3s; }
 
 @keyframes popInPolaroid {
     0% {
@@ -147,8 +147,8 @@ body {
         transform: scale(1) rotate(var(--rotate));
     }
 }
-    
-/* CONFETTI BURST */
+
+/* CONFETTI CONTAINER */
 #confetti-container {
     position: fixed;
     width: 100%;
@@ -156,19 +156,20 @@ body {
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 999;
     overflow: hidden;
+    z-index: 999;
 }
 
+/* CONFETTI PIECES */
 .confetti {
     position: absolute;
     width: 8px;
-    height: 14px;
-    top: -20px;
+    height: 12px;
     opacity: 0.9;
     animation: fall linear forwards;
 }
 
+/* FALL ANIMATION */
 @keyframes fall {
     0% {
         transform: translateY(0) rotate(0deg);
@@ -179,14 +180,11 @@ body {
 }
 
 </style>
+
 </head>
 
 <body>
-
-<!-- CONFETTI -->
-<div id="confetti-container"></div>
-
-<!-- POLAROIDS -->
+<!-- PAGE 1 POLAROIDS -->
 <div id="polaroids-page1" class="polaroid-container">
     <div class="polaroid p1"><img src="../images/photo3.jpg"></div>
     <div class="polaroid p2"><img src="../images/photo4.jpg"></div>
@@ -201,24 +199,33 @@ body {
 
 </div>
 
+<div id="confetti-container"></div>
+
 <div class="container">
 
     <!-- PAGE 1 -->
-    <div id="page1">
+    <div id="page1" class="text">
         <div id="lineContainer"></div>
-        <div id="hint">Tap or press Enter to read...</div>
+
+        <div id="hint">Press Enter to read...</div>
+
+        <!-- ✅ NEW MESSAGE -->
         <div id="endMessage">Press Next to continue...</div>
-        <span class="next-btn" onclick="nextPage()">Next</span>
+
+        <span class="next-btn" onclick="showFinal()">Next</span>
     </div>
 
     <!-- PAGE 2 -->
     <div id="page2" class="final">
-        <p>Once Again Wishing U A <br> Very Happy Birthday Diiii !!! 🎉</p>
+        <p>
+            Once Again Wishing U A <br>
+            Very Happy Birthday Diiii !!!
+        </p>
     </div>
 
 </div>
 
-<a href="../index.html" class="back-btn" id="backBtn">BACK ◀</a>
+<a href="../index.html" id="backBtn" class="back-btn">BACK ◀</a>
 
 <script>
 const lines = [
@@ -228,35 +235,74 @@ const lines = [
 "Looking forward to more late-night talks, endless laughter, and a lifetime of an unbreakable bond."
 ];
 
-let i = 0;
+let currentLine = 0;
 
-function showLine() {
-    if (i < lines.length) {
-        let div = document.createElement("div");
-        div.textContent = lines[i];
+// Show next line
+function showNextLine() {
+    if (currentLine < lines.length) {
+        const container = document.getElementById("lineContainer");
 
-        if (i === 0) {
-            div.style.textAlign = "center";
-            div.style.fontWeight = "bold";
-            div.style.fontSize = "20px";
+        const newLine = document.createElement("div");
+        newLine.textContent = lines[currentLine];
+
+        // center first line
+        if (currentLine === 0) {
+            newLine.style.textAlign = "center";
+            newLine.style.fontWeight = "bold";
+            newLine.style.fontFamily = "Arial, sans-serif";
         }
 
-        document.getElementById("lineContainer").appendChild(div);
-        i++;
+        container.appendChild(newLine);
 
-        if (i === lines.length) {
-            document.getElementById("hint").style.display = "none";
+        currentLine++;
+
+        // ✅ show end message and hide hint only after last line
+        if (currentLine === lines.length) {
             document.getElementById("endMessage").style.display = "block";
+            document.getElementById("hint").style.display = "none";
         }
     }
 }
 
-document.addEventListener("click", showLine);
-document.addEventListener("keydown", e => { if (e.key === "Enter") showLine(); });
+// ENTER key
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        showNextLine();
+    }
+});
 
-window.onload = showLine;
+// TAP (mobile + desktop)
+document.addEventListener("click", function() {
+    showNextLine();
+});
 
-/* CONFETTI BURST FUNCTION */
+// first line auto
+window.onload = showNextLine;
+
+// INITIAL LOAD
+window.onload = function() {
+    showNextLine();
+
+    document.getElementById("page1").style.display = "block";
+    document.getElementById("page2").style.display = "none";
+
+    document.getElementById("polaroids-page1").style.display = "block";
+    document.getElementById("polaroids-page2").style.display = "none";
+};
+
+// NEXT PAGE
+function showFinal() {
+    document.getElementById("page1").style.display = "none";
+    document.getElementById("page2").style.display = "block";
+
+    document.getElementById("polaroids-page1").style.display = "none";
+    document.getElementById("polaroids-page2").style.display = "block";
+
+    document.getElementById("backBtn").style.display = "block";
+
+    launchConfetti();
+}
+
 function launchConfetti() {
     const container = document.getElementById("confetti-container");
 
@@ -287,16 +333,6 @@ function launchConfetti() {
     }
 }
 
-/* NEXT PAGE */
-function nextPage() {
-    document.getElementById("page1").style.display = "none";
-    document.getElementById("page2").style.display = "block";
-
-    document.getElementById("polaroids").style.display = "block";
-    document.getElementById("backBtn").style.display = "block";
-
-    launchConfetti(); // 🎉 burst here
-}
 </script>
 
 </body>
