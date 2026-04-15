@@ -166,16 +166,18 @@ body {
     width: 8px;
     height: 12px;
     opacity: 0.9;
-    animation: fall linear forwards;
+    animation: explode 1s ease-out forwards;
 }
 
 /* FALL ANIMATION */
-@keyframes fall {
+@keyframes explode {
     0% {
-        transform: translateY(0) rotate(0deg);
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 1;
     }
     100% {
-        transform: translateY(110vh) rotate(720deg);
+        transform: translate(var(--x), var(--y)) scale(0.8) rotate(720deg);
+        opacity: 0;
     }
 }
 
@@ -304,32 +306,40 @@ function showFinal() {
 }
 
 function launchConfetti() {
-    const container = document.getElementById("confetti-container");
+const container = document.getElementById("confetti-container");
+
+    // get button position
+    const button = document.querySelector(".next-btn");
+    const rect = button.getBoundingClientRect();
+
+    const originX = rect.left + rect.width / 2;
+    const originY = rect.top + rect.height / 2;
 
     for (let i = 0; i < 120; i++) {
         const confetti = document.createElement("div");
         confetti.classList.add("confetti");
 
-        // random horizontal position
-        confetti.style.left = Math.random() * 100 + "vw";
+        // start from button center
+        confetti.style.left = originX + "px";
+        confetti.style.top = originY + "px";
 
-        // random colors
+        // random explosion direction
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 100 + Math.random() * 200;
+
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+
+        confetti.style.setProperty("--x", x + "px");
+        confetti.style.setProperty("--y", y + "px");
+
+        // colors
         confetti.style.backgroundColor =
             ["#ff4d4d","#ffd11a","#4dff88","#4db8ff","#ff66cc"][Math.floor(Math.random()*5)];
 
-        // random fall speed
-        confetti.style.animationDuration = (2 + Math.random() * 3) + "s";
-
-        // slight delay for natural effect
-        confetti.style.animationDelay = Math.random() * 2 + "s";
-
         container.appendChild(confetti);
 
-        const totalTime = (parseFloat(confetti.style.animationDuration) +
-                   parseFloat(confetti.style.animationDelay)) * 1000;
-
-
-        setTimeout(() => confetti.remove(), totalTime);
+        setTimeout(() => confetti.remove(), 1000);
     }
 }
 
