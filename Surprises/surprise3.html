@@ -175,7 +175,7 @@ body {
         transform: translateY(0) rotate(0deg);
     }
     100% {
-        transform: translateY(200vh) rotate(720deg);
+        transform: translateY(110vh) rotate(720deg);
     }
 }
 
@@ -304,7 +304,7 @@ function showFinal() {
 }
 
 function launchConfetti() {
-    const container = document.getElementById("confetti-container");
+   const container = document.getElementById("confetti-container");
 
     for (let i = 0; i < 120; i++) {
         const confetti = document.createElement("div");
@@ -312,8 +312,7 @@ function launchConfetti() {
 
         // random horizontal position
         confetti.style.left = Math.random() * 100 + "vw";
-        confetti.style.top = Math.random() * -100 + "vh";
-        
+
         // random colors
         confetti.style.backgroundColor =
             ["#ff4d4d","#ffd11a","#4dff88","#4db8ff","#ff66cc"][Math.floor(Math.random()*5)];
