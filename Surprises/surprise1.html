@@ -93,7 +93,7 @@ body {
 .photos {
     position: relative;
     width: 100%;
-    height: 220px; /* controls triangle height */
+    height: 220px;
     margin-top: 40px;
 }
 
@@ -116,21 +116,18 @@ body {
     50% { transform: translateY(-15px) rotate(var(--rotate)); }
 }
 
-/* TOP photo */
 .p1 {
     top: 0;
     left: 40%;
     --rotate: -4deg;
 }
 
-/* BOTTOM LEFT */
 .p2 {
     bottom: -60%;
     left: 20%;
     --rotate: 2deg;
 }
 
-/* BOTTOM RIGHT */
 .p3 {
     bottom: -60%;
     right: 20%;
@@ -150,7 +147,7 @@ body {
 .balloon {
     width: 35px;
     height: 50px;
-    border-radius: 50% ;
+    border-radius: 50%;
     position: relative;
     animation: floatUp 6s infinite ease-in;
 }
@@ -165,10 +162,6 @@ body {
     height: 40px;
     background: #444;
 }
-
-.balloon:nth-child(1) { background: red; }
-.balloon:nth-child(2) { background: blue; animation-duration: 7s; }
-.balloon:nth-child(3) { background: green; animation-duration: 5s; }
 
 @keyframes floatUp {
     to { transform: translateY(-120vh); opacity: 1; }
@@ -197,9 +190,7 @@ body {
         transform: translate(0, 0) scale(1);
         opacity: 1;
     }
-    70% {
-        opacity: 1;
-    }
+    70% { opacity: 1; }
     100% {
         transform: translate(var(--x), var(--y)) scale(0.3);
         opacity: 0;
@@ -260,26 +251,27 @@ const mobileLine1 = "❤️HAPPY";
 const mobileLine2 = "BIRTHDAY";
 const mobileLine3 = "VAISIYAA ❤️";
 
-function createBannerLetters(text, container){
+// FIX: use [...text] instead of text.split("") to correctly handle emoji
+function createBannerLetters(text, container) {
     container.innerHTML = "";
-    text.split("").forEach((char,i)=>{
-        if(char===" "){
-            const space=document.createElement("div");
-            space.style.width="4px";
+    [...text].forEach((char, i) => {
+        if (char === " ") {
+            const space = document.createElement("div");
+            space.style.width = "4px";
             container.appendChild(space);
             return;
         }
-        const div=document.createElement("div");
-        div.className="letter";
-        div.textContent=char;
-        div.style.animationDelay=(i*0.1)+"s";
+        const div = document.createElement("div");
+        div.className = "letter";
+        div.textContent = char;
+        div.style.animationDelay = (i * 0.1) + "s";
         container.appendChild(div);
     });
 }
 
 const app = document.getElementById("app");
 
-document.getElementById("revealBtn").addEventListener("click", ()=>{
+document.getElementById("revealBtn").addEventListener("click", () => {
     app.className = "main-screen";
 
     app.innerHTML = `
@@ -301,101 +293,88 @@ document.getElementById("revealBtn").addEventListener("click", ()=>{
 
         <div class="poppers"></div>
 
-        <a href="../index.html" id= "backBtn" class="back-btn">BACK ◀</a>
+        <a href="../index.html" id="backBtn" class="back-btn">BACK ◀</a>
     `;
 
     const b1 = document.getElementById("banner1");
     const b2 = document.getElementById("banner2");
     const b3 = document.getElementById("banner3");
 
-    function setupBanner(){
-        if(window.innerWidth <= 600){
-            createBannerLetters(mobileLine1,b1);
-            createBannerLetters(mobileLine2,b2);
-            createBannerLetters(mobileLine3,b3);
-            b1.style.display="flex";
-            b2.style.display="flex";
-            b3.style.display="flex";
+    function setupBanner() {
+        if (window.innerWidth <= 600) {
+            createBannerLetters(mobileLine1, b1);
+            createBannerLetters(mobileLine2, b2);
+            createBannerLetters(mobileLine3, b3);
+            b1.style.display = "flex";
+            b2.style.display = "flex";
+            b3.style.display = "flex";
         } else {
-            createBannerLetters(desktopLine1,b1);
-            createBannerLetters(desktopLine2,b2);
-            b1.style.display="flex";
-            b2.style.display="flex";
-            b3.style.display="none";
+            createBannerLetters(desktopLine1, b1);
+            createBannerLetters(desktopLine2, b2);
+            b1.style.display = "flex";
+            b2.style.display = "flex";
+            b3.style.display = "none";
         }
     }
 
     setupBanner();
     window.addEventListener("resize", setupBanner);
 
-     // Show balloons
-    document.querySelector(".balloons").style.display="flex";
-    document.getElementById("backBtn").style.display="block";
-    const colors = [
-    "#ff4d6d", "#ffd93d", "#6bcB77",
-    "#4d96ff", "#ff85a2", "#ff9f1c",
-    "#9b5de5", "#00bbf9"
-];
+    // Show balloons with random colors
+    const balloonColors = [
+        "#ff4d6d", "#ffd93d", "#6bcB77",
+        "#4d96ff", "#ff85a2", "#ff9f1c",
+        "#9b5de5", "#00bbf9"
+    ];
 
-document.querySelectorAll(".balloon").forEach(balloon => {
-    // random color
-    balloon.style.backgroundColor =
-        colors[Math.floor(Math.random() * colors.length)];
-
-    // random speed (optional but nice)
-    balloon.style.animationDuration =
-        (Math.random() * 3 + 4) + "s";
-});
+    document.querySelector(".balloons").style.display = "flex";
+    document.querySelectorAll(".balloon").forEach(balloon => {
+        balloon.style.backgroundColor =
+            balloonColors[Math.floor(Math.random() * balloonColors.length)];
+        balloon.style.animationDuration = (Math.random() * 3 + 4) + "s";
+    });
 
     // POPPERS
-    function createPopper(x,y){
-        const container=document.querySelector(".poppers");
-        const colors = ["#ff4d6d","#ffd93d","#6bcB77","#4d96ff","#ff85a2"];
-        for(let i=0;i<15;i++){
-            const pop=document.createElement("div");
+    function createPopper(x, y) {
+        const container = document.querySelector(".poppers");
+        const colors = ["#ff4d6d", "#ffd93d", "#6bcB77", "#4d96ff", "#ff85a2"];
+        for (let i = 0; i < 15; i++) {
+            const pop = document.createElement("div");
             pop.classList.add("pop");
-            pop.style.left=x+"px";
-            pop.style.top=y+"px";
-
-            pop.style.backgroundColor =
-            colors[Math.floor(Math.random() * colors.length)];
-
-            const angle=Math.random()*2*Math.PI;
-            const dist=Math.random()*100;
-
-            pop.style.setProperty("--x", Math.cos(angle)*dist+"px");
-            pop.style.setProperty("--y", Math.sin(angle)*dist+"px");
-
+            pop.style.left = x + "px";
+            pop.style.top = y + "px";
+            pop.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            const angle = Math.random() * 2 * Math.PI;
+            const dist = Math.random() * 100;
+            pop.style.setProperty("--x", Math.cos(angle) * dist + "px");
+            pop.style.setProperty("--y", Math.sin(angle) * dist + "px");
             container.appendChild(pop);
-            setTimeout(()=>pop.remove(),1200);
+            setTimeout(() => pop.remove(), 1200);
         }
     }
 
-    setInterval(()=>{
-        createPopper(Math.random()*window.innerWidth, Math.random()*window.innerHeight);
-    },1000);
+    setInterval(() => {
+        createPopper(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
+    }, 1000);
 
     // CONFETTI
-    function createConfetti(){
-        const colors=["#ff4d6d","#ffd93d","#6bcB77","#4d96ff","#ff85a2"];
-        const c=document.createElement("div");
-
-        c.className="confetti";
-        c.style.left=Math.random()*window.innerWidth+"px";
-        c.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
-
-        const size=Math.random()*6+4;
-        c.style.width=size+"px";
-        c.style.height=size*1.5+"px";
-        c.style.animationDuration=(Math.random()*3+3)+"s";
-
+    function createConfetti() {
+        const colors = ["#ff4d6d", "#ffd93d", "#6bcB77", "#4d96ff", "#ff85a2"];
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * window.innerWidth + "px";
+        c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        const size = Math.random() * 6 + 4;
+        c.style.width = size + "px";
+        c.style.height = size * 1.5 + "px";
+        c.style.animationDuration = (Math.random() * 3 + 3) + "s";
         document.body.appendChild(c);
-        setTimeout(()=>c.remove(),4000);
+        setTimeout(() => c.remove(), 4000);
     }
 
-    setInterval(()=>{
-        for(let i=0;i<3;i++) createConfetti();
-    },500);
+    setInterval(() => {
+        for (let i = 0; i < 3; i++) createConfetti();
+    }, 500);
 });
 </script>
 </body>
