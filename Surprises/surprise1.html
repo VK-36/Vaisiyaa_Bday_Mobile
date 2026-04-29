@@ -116,23 +116,9 @@ body {
     50% { transform: translateY(-15px) rotate(var(--rotate)); }
 }
 
-.p1 {
-    top: 0;
-    left: 40%;
-    --rotate: -4deg;
-}
-
-.p2 {
-    bottom: -60%;
-    left: 20%;
-    --rotate: 2deg;
-}
-
-.p3 {
-    bottom: -60%;
-    right: 20%;
-    --rotate: -4deg;
-}
+.p1 { top: 0; left: 40%; --rotate: -4deg; }
+.p2 { bottom: -60%; left: 20%; --rotate: 2deg; }
+.p3 { bottom: -60%; right: 20%; --rotate: -4deg; }
 
 /* BALLOONS */
 .balloons {
@@ -186,15 +172,9 @@ body {
 }
 
 @keyframes burst {
-    0% {
-        transform: translate(0, 0) scale(1);
-        opacity: 1;
-    }
-    70% { opacity: 1; }
-    100% {
-        transform: translate(var(--x), var(--y)) scale(0.3);
-        opacity: 0;
-    }
+    0%   { transform: translate(0,0) scale(1); opacity: 1; }
+    70%  { opacity: 1; }
+    100% { transform: translate(var(--x), var(--y)) scale(0.3); opacity: 0; }
 }
 
 /* CONFETTI */
@@ -209,14 +189,8 @@ body {
 }
 
 @keyframes fall {
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(110vh) translateX(50px) rotate(720deg);
-        opacity: 0;
-    }
+    0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) translateX(50px) rotate(720deg); opacity: 0; }
 }
 
 /* BACK BUTTON */
@@ -243,18 +217,21 @@ body {
 </div>
 
 <script>
-// Banner text
-const desktopLine1 = "❤️HAPPY BIRTHDAY";
-const desktopLine2 = "VAISIYAA ❤️";
+// Use \u2764 (plain red heart, no variation selector) to avoid invisible extra characters
+const desktopLine1 = "\u2764HAPPY BIRTHDAY";
+const desktopLine2 = "VAISIYAA \u2764";
 
-const mobileLine1 = "❤️HAPPY";
+const mobileLine1 = "\u2764HAPPY";
 const mobileLine2 = "BIRTHDAY";
-const mobileLine3 = "VAISIYAA ❤️";
+const mobileLine3 = "VAISIYAA \u2764";
 
-// FIX: use [...text] instead of text.split("") to correctly handle emoji
 function createBannerLetters(text, container) {
     container.innerHTML = "";
-    [...text].forEach((char, i) => {
+    // Use Intl.Segmenter to correctly split by grapheme cluster (handles all emoji properly)
+    const segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+    const segments = [...segmenter.segment(text)].map(s => s.segment);
+
+    segments.forEach((char, i) => {
         if (char === " ") {
             const space = document.createElement("div");
             space.style.width = "4px";
@@ -320,7 +297,7 @@ document.getElementById("revealBtn").addEventListener("click", () => {
     setupBanner();
     window.addEventListener("resize", setupBanner);
 
-    // Show balloons with random colors
+    // Balloons with random colors
     const balloonColors = [
         "#ff4d6d", "#ffd93d", "#6bcB77",
         "#4d96ff", "#ff85a2", "#ff9f1c",
