@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Surprise 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+:root {
+  --bg: #08060f;
+  --gold: #f5c842;
+  --gold-soft: #e8b830;
+  --gold-faint: rgba(245,200,66,0.12);
+  --cream: #fdfaf0;
+  --white: #ffffff;
+  --rose: #e8899a;
+}
+ 
+html { scroll-behavior: smooth; }
+ 
+body {
+  background: var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  /* KEY FIX: allow normal scrolling */
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}
+ 
+/* ── STAGE BG ── */
+#stage-bg {
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse at 50% 30%, #1a0a2e 0%, #08060f 65%);
+  z-index: 0;
+}
+#stage-bg::before {
+  content: '';
+  position: fixed; top: -20%; left: 50%;
+  transform: translateX(-50%);
+  width: 60vw; height: 120vh;
+  background: radial-gradient(ellipse at 50% 0%, rgba(245,200,66,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+ 
+.curtain {
+  position: fixed; top: 0; bottom: 0;
+  width: 14vw; z-index: 2; pointer-events: none;
+}
+.curtain-left  { left: 0;  background: linear-gradient(90deg, #120820, #1e0f35 60%, transparent); }
+.curtain-right { right: 0; background: linear-gradient(270deg, #120820, #1e0f35 60%, transparent); }
+ 
+.star {
+  position: fixed; border-radius: 50%; background: white;
+  animation: twinkle var(--dur) infinite ease-in-out alternate; z-index: 1;
+}
+@keyframes twinkle {
+  from { opacity: 0.05; transform: scale(0.7); }
+  to   { opacity: 0.6;  transform: scale(1.3); }
+}
+ 
+/* ── WRAPPER — scrollable ── */
+.wrapper {
+  position: relative;
+  z-index: 3;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: max(40px, env(safe-area-inset-top)) 20px max(100px, env(safe-area-inset-bottom));
+}
+ 
+/* ── PHASE 1: OPENING ── */
+#phase-opening {
+  width: 100%; max-width: 480px;
+  text-align: center;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 20px;
+  min-height: 100svh;
+  justify-content: center;
+}
+ 
+.committee-tag {
+  font-size: 10px; letter-spacing: 5px;
+  text-transform: uppercase;
+  color: rgba(245,200,66,0.5);
+  opacity: 0; animation: fadeIn 1s ease 0.3s forwards;
+}
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+ 
+.opening-icon {
+  font-size: clamp(48px, 14vw, 72px);
+  opacity: 0; animation: fadeUp 0.9s cubic-bezier(.34,1.56,.64,1) 0.6s forwards;
+  filter: drop-shadow(0 0 20px rgba(245,200,66,0.4));
+}
+ 
+.opening-title {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(13px, 3.5vw, 17px);
+  color: rgba(255,255,255,0.5); line-height: 1.6;
+  max-width: 320px;
+  opacity: 0; animation: fadeUp 0.8s ease 1s forwards;
+}
+.opening-title strong {
+  color: var(--gold); font-style: normal; font-weight: 700;
+  display: block; font-size: clamp(16px, 4.5vw, 22px); margin-bottom: 6px;
+}
+ 
+.drumroll-btn {
+  margin-top: 12px;
+  background: transparent;
+  border: 1.5px solid rgba(245,200,66,0.4);
+  color: var(--gold);
+  padding: 14px 36px; border-radius: 50px;
+  font-size: 14px; font-family: 'DM Sans', sans-serif;
+  letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0; animation: fadeUp 0.8s ease 1.4s forwards;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.drumroll-btn:hover { background: var(--gold-faint); border-color: var(--gold); transform: translateY(-2px); }
+.drumroll-btn:active { transform: scale(0.96); }
+ 
+/* ── PHASE 2: DRUMROLL ── */
+#phase-drumroll {
+  display: none; flex-direction: column;
+  align-items: center; justify-content: center;
+  width: 100%; text-align: center; gap: 24px;
+  min-height: 100svh;
+}
+ 
+.drumroll-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(20px, 6vw, 30px);
+  color: var(--cream);
+  opacity: 0; animation: fadeIn 0.5s ease forwards;
+}
+ 
+.drumroll-dots { display: flex; gap: 10px; justify-content: center; }
+.dr-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--gold);
+  animation: drBounce 0.4s infinite ease-in-out alternate;
+}
+.dr-dot:nth-child(2) { animation-delay: 0.13s; }
+.dr-dot:nth-child(3) { animation-delay: 0.26s; }
+.dr-dot:nth-child(4) { animation-delay: 0.39s; }
+.dr-dot:nth-child(5) { animation-delay: 0.52s; }
+@keyframes drBounce {
+  from { transform: scaleY(0.4); opacity: 0.3; }
+  to   { transform: scaleY(1.4); opacity: 1; }
+}
+ 
+/* ── PHASE 3: AWARD ── */
+#phase-award {
+  display: none; flex-direction: column;
+  align-items: center; width: 100%; max-width: 480px;
+  padding: 40px 0 20px;
+}
+ 
+/* CERTIFICATE */
+.certificate {
+  width: 100%;
+  background: linear-gradient(160deg, #1a1008, #0f0a18);
+  border: 1px solid rgba(245,200,66,0.25);
+  border-radius: 20px;
+  padding: clamp(24px, 6vw, 44px) clamp(20px, 5vw, 36px);
+  position: relative; overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(245,200,66,0.08),
+    0 20px 60px rgba(0,0,0,0.5),
+    0 0 80px rgba(245,200,66,0.06);
+  opacity: 0; transform: scale(0.88) translateY(20px);
+  transition: opacity 0.8s cubic-bezier(.22,1,.36,1), transform 0.8s cubic-bezier(.22,1,.36,1);
+}
+.certificate.show { opacity: 1; transform: scale(1) translateY(0); }
+ 
+.cert-corner {
+  position: absolute; font-size: 18px; opacity: 0.3; line-height: 1;
+}
+.cert-corner.tl { top: 12px; left: 14px; }
+.cert-corner.tr { top: 12px; right: 14px; }
+.cert-corner.bl { bottom: 12px; left: 14px; }
+.cert-corner.br { bottom: 12px; right: 14px; }
+ 
+.cert-ribbon { text-align: center; margin-bottom: 20px; }
+.cert-ribbon-text {
+  display: inline-block; font-size: 9px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold-soft);
+  border-top: 1px solid rgba(245,200,66,0.3);
+  border-bottom: 1px solid rgba(245,200,66,0.3);
+  padding: 5px 14px;
+}
+ 
+.cert-trophy {
+  text-align: center;
+  font-size: clamp(52px, 16vw, 80px);
+  margin-bottom: 4px;
+  filter: drop-shadow(0 0 24px rgba(245,200,66,0.5));
+  animation: trophyFloat 3s infinite ease-in-out;
+}
+@keyframes trophyFloat {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+ 
+.cert-award-label {
+  text-align: center; font-size: 10px;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(245,200,66,0.5); margin-bottom: 10px;
+}
+ 
+.cert-award-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(17px, 5vw, 24px);
+  font-weight: 700; color: var(--gold);
+  text-align: center; line-height: 1.3; margin-bottom: 6px;
+  text-shadow: 0 0 30px rgba(245,200,66,0.3);
+}
+ 
+.cert-divider {
+  display: flex; align-items: center; gap: 10px; margin: 16px 0;
+}
+.cert-divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(245,200,66,0.3), transparent); }
+.cert-divider-icon { color: var(--gold); font-size: 12px; opacity: 0.6; }
+ 
+.cert-presented {
+  text-align: center; font-size: 11px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); margin-bottom: 8px;
+}
+ 
+.cert-name {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(26px, 8vw, 38px);
+  color: var(--cream); text-align: center; margin-bottom: 20px;
+}
+ 
+.cert-citation {
+  background: rgba(245,200,66,0.05);
+  border: 1px solid rgba(245,200,66,0.12);
+  border-radius: 12px; padding: 16px 18px; margin-bottom: 20px;
+}
+.cert-citation-label {
+  font-size: 9px; letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(245,200,66,0.4); margin-bottom: 10px;
+}
+.cert-citation-text {
+  font-family: 'Crimson Pro', serif;
+  font-size: clamp(14px, 3.8vw, 17px);
+  color: rgba(255,255,255,0.65);
+  line-height: 1.8; font-weight: 300;
+}
+.cert-citation-text em { color: var(--gold); font-style: italic; }
+ 
+.cert-sweet {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: clamp(15px, 4.2vw, 19px);
+  color: var(--rose); text-align: center;
+  line-height: 1.7; padding: 0 8px; margin-bottom: 20px;
+}
+ 
+.cert-seal {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+}
+.seal-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(245,200,66,0.2)); }
+.seal-line.right { background: linear-gradient(270deg, transparent, rgba(245,200,66,0.2)); }
+.seal-circle {
+  width: 56px; height: 56px; border-radius: 50%;
+  border: 1.5px solid rgba(245,200,66,0.4);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 1px;
+  background: radial-gradient(circle, rgba(245,200,66,0.08), transparent);
+}
+.seal-emoji { font-size: 20px; }
+.seal-text { font-size: 7px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(245,200,66,0.5); }
+ 
+/* CONFETTI */
+#cf { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+ 
+/* BACK BTN */
+.back-btn {
+  position: fixed;
+  bottom: max(20px, env(safe-area-inset-bottom)); right: 20px;
+  background: linear-gradient(135deg, #e8899a, #f0b080);
+  padding: 11px 22px; border-radius: 30px;
+  text-decoration: none; color: white;
+  font-weight: 400; font-size: 12px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(232,137,154,0.3);
+  font-family: 'DM Sans', sans-serif;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.2s, box-shadow 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.back-btn.show { opacity: 1; pointer-events: auto; }
+.back-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(232,137,154,0.45); }
+</style>
+</head>
+<body>
+ 
+<div id="stage-bg"></div>
+<div class="curtain curtain-left"></div>
+<div class="curtain curtain-right"></div>
+<canvas id="cf"></canvas>
+ 
+<div class="wrapper">
+ 
+  <!-- PHASE 1 -->
+  <div id="phase-opening">
+    <div class="committee-tag">The Friendship Committee</div>
+    <div class="opening-icon">🎖️</div>
+    <div class="opening-title">
+      <strong>An Announcement</strong>
+      The committee has spent considerable time deliberating.<br>
+      After extensive review of the evidence,<br>
+      a decision has been reached.
+    </div>
+    <button class="drumroll-btn" onclick="startDrumroll()">🥁 &nbsp;Roll the drums</button>
+  </div>
+ 
+  <!-- PHASE 2 -->
+  <div id="phase-drumroll">
+    <div class="drumroll-text">And the award goes to…</div>
+    <div class="drumroll-dots">
+      <div class="dr-dot"></div>
+      <div class="dr-dot"></div>
+      <div class="dr-dot"></div>
+      <div class="dr-dot"></div>
+      <div class="dr-dot"></div>
+    </div>
+  </div>
+ 
+  <!-- PHASE 3 -->
+  <div id="phase-award">
+    <div class="certificate" id="cert">
+      <span class="cert-corner tl">✦</span>
+      <span class="cert-corner tr">✦</span>
+      <span class="cert-corner bl">✦</span>
+      <span class="cert-corner br">✦</span>
+ 
+      <div class="cert-ribbon">
+        <span class="cert-ribbon-text">Official Award Certificate · Friendship Committee</span>
+      </div>
+ 
+      <div class="cert-trophy">🏆</div>
+ 
+      <div class="cert-award-label">Hereby presents</div>
+      <div class="cert-award-name">The Lifetime Achievement Award<br>for Being Irreplaceable</div>
+ 
+      <div class="cert-divider">
+        <div class="cert-divider-line"></div>
+        <div class="cert-divider-icon">✦</div>
+        <div class="cert-divider-line"></div>
+      </div>
+ 
+      <div class="cert-presented">Presented to</div>
+      <div class="cert-name">Vaisiyaa Varshinee R</div>
+ 
+      <div class="cert-citation">
+        <div class="cert-citation-label">Citation</div>
+        <div class="cert-citation-text">
+          In recognition of <em>five undefeated years</em> of showing up,
+          receiving an unreasonable volume of texts and reels at all hours,
+          of giving advice that was annoyingly correct most of the time,
+          of eating chocolate with zero remorse and maximum dedication,
+          and of somehow making every hard thing feel
+          <em>slightly less hard</em> just by being there.
+          <br><br>
+          The committee also notes her exceptional record in
+          <em>emotional support delivery</em>, her consistent performance
+          in the field of making people feel genuinely seen,
+          and her unmatched ability to be exactly what someone needs
+          before they even know they need it.
+        </div>
+      </div>
+ 
+      <div class="cert-sweet">
+        There is no one like you, di.<br>
+        There never will be.<br>
+        And we are all better for it. 🤍
+      </div>
+ 
+      <div class="cert-seal">
+        <div class="seal-line"></div>
+        <div class="seal-circle">
+          <span class="seal-emoji">🌸</span>
+          <span class="seal-text">Official</span>
+        </div>
+        <div class="seal-line right"></div>
+      </div>
+    </div>
+  </div>
+ 
+</div>
+ 
+<a href="homepage.html" class="back-btn" id="backBtn">BACK ◀</a>
+ 
+<script>
+/* STARS */
+(function(){
+  const bg = document.getElementById('stage-bg');
+  for(let i=0;i<80;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    const sz=Math.random()*1.8+0.4;
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${(Math.random()*2+1.5).toFixed(1)}s;animation-delay:${(Math.random()*4).toFixed(1)}s;`;
+    bg.appendChild(s);
+  }
+})();
+ 
+function startDrumroll() {
+  document.getElementById('phase-opening').style.display = 'none';
+  const dr = document.getElementById('phase-drumroll');
+  dr.style.display = 'flex';
+  setTimeout(revealAward, 2400);
+}
+ 
+function revealAward() {
+  document.getElementById('phase-drumroll').style.display = 'none';
+  const pa = document.getElementById('phase-award');
+  pa.style.display = 'flex';
+  // scroll to top so certificate is visible
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    document.getElementById('cert').classList.add('show');
+  }));
+  setTimeout(startConfetti, 300);
+  setTimeout(() => document.getElementById('backBtn').classList.add('show'), 1800);
+}
+ 
+/* CONFETTI */
+const cfCanvas = document.getElementById('cf');
+const cfCtx = cfCanvas.getContext('2d');
+let confettis = [];
+ 
+function resizeCF(){ cfCanvas.width=window.innerWidth; cfCanvas.height=window.innerHeight; }
+resizeCF();
+window.addEventListener('resize', resizeCF);
+ 
+class Confetto {
+  constructor(){ this.reset(true); }
+  reset(init=false){
+    this.x=Math.random()*cfCanvas.width;
+    this.y=init?Math.random()*cfCanvas.height*0.5:-20;
+    this.w=Math.random()*10+5; this.h=Math.random()*5+3;
+    this.angle=Math.random()*Math.PI*2;
+    this.spin=(Math.random()-0.5)*0.2;
+    this.vy=Math.random()*2.5+1; this.vx=(Math.random()-0.5)*1.5;
+    const cols=['#f5c842','#ff6b9d','#c084fc','#60d0ff','#ff9f5e','#7fffb0','#ffd700'];
+    this.color=cols[Math.floor(Math.random()*cols.length)];
+  }
+  update(){ this.y+=this.vy; this.x+=this.vx; this.angle+=this.spin; if(this.y>cfCanvas.height+20) this.reset(); }
+  draw(ctx){
+    ctx.save(); ctx.globalAlpha=0.85;
+    ctx.translate(this.x,this.y); ctx.rotate(this.angle);
+    ctx.fillStyle=this.color; ctx.beginPath();
+    ctx.ellipse(0,0,this.w/2,this.h/2,0,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+}
+ 
+let cfRunning=false;
+function startConfetti(){
+  if(cfRunning) return; cfRunning=true;
+  for(let i=0;i<100;i++) confettis.push(new Confetto());
+  cfLoop();
+  setTimeout(()=>{ cfRunning=false; },5000);
+}
+function cfLoop(){
+  cfCtx.clearRect(0,0,cfCanvas.width,cfCanvas.height);
+  confettis.forEach(c=>{ c.update(); c.draw(cfCtx); });
+  if(confettis.some(c=>c.y<cfCanvas.height+20)) requestAnimationFrame(cfLoop);
+  else { cfCtx.clearRect(0,0,cfCanvas.width,cfCanvas.height); confettis=[]; }
+}
+</script>
+ 
+</body>
+</html>

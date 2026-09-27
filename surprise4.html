@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Surprise 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #12100e;
+  --gold: #c9a96e;
+  --gold-light: #e8cc8a;
+  --rose: #e8899a;
+}
+
+html {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll; /* force scrollbar, prevents layout shift */
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(201,169,110,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(232,137,154,0.04) 0%, transparent 50%),
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.012) 39px, rgba(255,255,255,0.012) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.008) 39px, rgba(255,255,255,0.008) 40px);
+  pointer-events: none; z-index: 0;
+}
+
+/* STRING LIGHTS */
+.lights-row {
+  position: relative;
+  width: 100%;
+  height: 52px;
+  z-index: 5;
+  flex-shrink: 0;
+}
+.lights-row svg { width: 100%; height: 100%; }
+
+/* HEADER */
+.page-header {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: max(16px, env(safe-area-inset-top)) 20px 4px;
+}
+.page-header h1 {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(24px, 8vw, 38px);
+  color: var(--gold-light);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.page-header p {
+  font-size: 11px;
+  color: rgba(201,169,110,0.4);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* WALL — 2-col grid, centred, safe padding */
+#wall {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px 30px;
+  padding: 20px 20px 40px;
+  max-width: 480px;
+  margin: 0 auto;
+  /* contain rotated overflow without cutting shadows too hard */
+  overflow: visible;
+}
+
+/* POLAROID */
+.polaroid {
+  position: relative;
+  background: #fdfaf2;
+  padding: 8px 8px 28px;
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.55),
+    0 1px 3px rgba(0,0,0,0.3),
+    inset 0 0 0 1px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition:
+    transform 0.32s cubic-bezier(.34,1.4,.64,1),
+    box-shadow 0.28s ease;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  will-change: transform;
+  /* tilt set by JS via data-r */
+}
+
+.polaroid:active {
+  transform: rotate(0deg) scale(1.05) !important;
+  box-shadow:
+    0 18px 44px rgba(0,0,0,0.7),
+    0 4px 10px rgba(0,0,0,0.4),
+    0 0 0 2px rgba(201,169,110,0.35);
+  z-index: 50;
+}
+
+/* Photo area — square, fills polaroid width */
+.polaroid .photo {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background: #2a2420;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.polaroid .photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.polaroid .photo.empty::after {
+  content: '📷';
+  font-size: 26px;
+  opacity: 0.2;
+}
+
+/* Caption */
+.polaroid .caption {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(15px, 3.5vw, 18px);
+  color: #3a2e26;
+  text-align: center;
+  padding-top: 7px;
+  line-height: 1.25;
+}
+
+/* PIN */
+.pin {
+  position: absolute;
+  top: -10px; left: 50%;
+  transform: translateX(-50%);
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fae07a, #b8860b);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.55), inset 0 1px 1px rgba(255,255,255,0.4);
+  z-index: 10;
+}
+
+/* TAPE */
+.tape {
+  position: absolute;
+  top: -8px; left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 40px; height: 16px;
+  background: rgba(255,255,248,0.42);
+  border: 1px solid rgba(200,195,180,0.3);
+  z-index: 10;
+}
+
+/* PREVIEW OVERLAY */
+#preview {
+  position: fixed; inset: 0;
+  z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(10,8,6,0);
+  padding: 20px;
+  pointer-events: none;
+  transition: background 0.3s ease;
+}
+#preview.open {
+  background: rgba(10,8,6,0.9);
+  pointer-events: auto;
+}
+
+#preview-card {
+  background: #fdfaf2;
+  padding: 12px 12px 40px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.85);
+  width: min(82vw, 280px);
+  transform: scale(0.72) translateY(24px);
+  opacity: 0;
+  transition: transform 0.38s cubic-bezier(.34,1.4,.64,1), opacity 0.28s ease;
+}
+#preview.open #preview-card {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+#preview-img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  display: block;
+  background: #2a2420;
+}
+
+#preview-caption {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(17px, 5vw, 22px);
+  color: #3a2e26;
+  text-align: center;
+  padding-top: 10px;
+  line-height: 1.35;
+}
+
+#preview-close {
+  position: fixed;
+  top: max(16px, env(safe-area-inset-top));
+  right: 16px;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  z-index: 201;
+  opacity: 0;
+  transition: opacity 0.25s ease 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  /* larger tap target */
+  min-width: 44px; min-height: 44px;
+}
+#preview.open #preview-close { opacity: 1; }
+
+/* BACK BTN */
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 20px max(24px, env(safe-area-inset-bottom));
+}
+.back-btn {
+  background: linear-gradient(135deg, var(--rose), #f0b080);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 20px rgba(232,137,154,0.3);
+  min-height: 44px;
+  display: flex; align-items: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* FOOTER */
+.footer-note {
+  position: relative; z-index: 2;
+  text-align: center;
+  padding: 4px 20px max(32px, env(safe-area-inset-bottom));
+  font-family: 'Caveat', cursive;
+  font-size: 15px;
+  color: rgba(201,169,110,0.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .polaroid, #preview-card { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="preview">
+  <div id="preview-card">
+    <img id="preview-img" src="" alt="">
+    <div id="preview-caption"></div>
+  </div>
+  <button id="preview-close" onclick="closePreview()" aria-label="Close">✕</button>
+</div>
+
+<div class="lights-row" aria-hidden="true">
+  <svg viewBox="0 0 400 52" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" id="lights-svg"></svg>
+</div>
+
+<div class="page-header">
+  <h1>Our Little Wall 📌</h1>
+  <p>tap a photo to zoom in</p>
+</div>
+
+<div id="wall">
+
+  <div class="polaroid" data-r="-4" data-src="images/photo1.jpg" data-caption="my constant 🤍">
+    <div class="pin"></div>
+    <div class="photo"><img src="images/photo1.jpg" alt="memory 1" onerror="this.parentElement.classList.add('empty');this.remove()"></div>
+    <div class="caption">my constant 🤍</div>
+  </div>
+
+  <div class="polaroid" data-r="3" data-src="images/photo2.jpg" data-caption="one of the good days ✨">
+    <div class="tape"></div>
+    <div class="photo"><img src="images/photo2.jpg" alt="memory 2" onerror="this.parentElement.classList.add('empty');this.remove()"></div>
+    <div class="caption">one of the good days ✨</div>
+  </div>
+
+  <div class="polaroid" data-r="-2" data-src="images/photo3.jpg" data-caption="bestest person 🌸">
+    <div class="pin"></div>
+    <div class="photo"><img src="images/photo3.jpg" alt="memory 3" onerror="this.parentElement.classList.add('empty');this.remove()"></div>
+    <div class="caption">bestest person 🌸</div>
+  </div>
+
+  <div class="polaroid" data-r="5" data-src="images/photo4.jpg" data-caption="the sister I chose">
+    <div class="tape"></div>
+    <div class="photo"><img src="images/photo4.jpg" alt="memory 4" onerror="this.parentElement.classList.add('empty');this.remove()"></div>
+    <div class="caption">the sister I chose</div>
+  </div>
+
+  <div class="polaroid" data-r="-3" data-src="images/photo5.jpg" data-caption="though every high and low">
+    <div class="pin"></div>
+    <div class="photo"><img src="images/photo5.jpg" alt="memory 5" onerror="this.parentElement.classList.add('empty');this.remove()"></div>
+    <div class="caption">though every high and low</div>
+  </div>
+
+  <div class="polaroid" data-r="2" data-src="images/photo6.jpg" data-caption="5 years & counting ✨">
+    <div class="tape"></div>
+    <div class="photo"><img src="images/photo6.jpg" alt="memory 6" onerror="this.parentElement.classList.add('empty');this.remove()"></div>
+    <div class="caption">5 years & counting ✨</div>
+  </div>
+
+</div>
+
+<div class="footer"><a href="homepage.html" class="back-btn">BACK ◀</a></div>
+
+<script>
+/* APPLY ROTATIONS — use data-r (degrees) for cross-browser reliability */
+document.querySelectorAll('.polaroid').forEach(p => {
+  const deg = parseFloat(p.dataset.r) || 0;
+  p.style.transform = `rotate(${deg}deg)`;
+  p.style.setProperty('--base-r', `${deg}deg`);
+});
+
+/* STRING LIGHTS */
+(function(){
+  const svg = document.getElementById('lights-svg');
+  const W = 400, count = 10;
+  let html = '<defs>';
+  const bulbColors = ['#ffe8a0','#ffb3cc','#c084fc','#60d0ff','#b0f0b0','#ffb3cc'];
+  for(let i=1;i<=count;i++){
+    const c = bulbColors[(i-1) % bulbColors.length];
+    html += `<radialGradient id="g${i}" cx="40%" cy="30%" r="60%"><stop offset="0%" stop-color="#fffde0"/><stop offset="100%" stop-color="${c}"/></radialGradient>`;
+  }
+  html += '</defs>';
+  // wire
+  const pts = [];
+  for(let i=0;i<=count+1;i++){
+    pts.push([(i/(count+1))*W, 8 + Math.sin(i*Math.PI/(count+1))*14]);
+  }
+  let d = `M ${pts[0][0]} ${pts[0][1]}`;
+  for(let i=1;i<pts.length;i++) d += ` L ${pts[i][0]} ${pts[i][1]}`;
+  html += `<path d="${d}" fill="none" stroke="rgba(201,169,110,0.28)" stroke-width="1.2"/>`;
+  // bulbs
+  for(let i=1;i<=count;i++){
+    const bx = pts[i][0], by = pts[i][1];
+    const c = bulbColors[(i-1) % bulbColors.length];
+    html += `<rect x="${bx-1.5}" y="${by+1}" width="3" height="3.5" rx="0.5" fill="rgba(90,70,30,0.55)"/>`;
+    html += `<ellipse cx="${bx}" cy="${by+10}" rx="4.5" ry="6" fill="url(#g${i})" opacity="0.9"/>`;
+    html += `<ellipse cx="${bx}" cy="${by+9}" rx="3" ry="4" fill="${c}" opacity="0.22"/>`;
+  }
+  svg.innerHTML = html;
+})();
+
+/* TAP TO PREVIEW */
+document.querySelectorAll('.polaroid').forEach(p => {
+  p.addEventListener('click', () => openPreview(p.dataset.src, p.dataset.caption));
+});
+
+function openPreview(src, caption) {
+  document.getElementById('preview-img').src = src;
+  document.getElementById('preview-caption').textContent = caption;
+  document.getElementById('preview').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePreview() {
+  document.getElementById('preview').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('preview').addEventListener('click', function(e) {
+  if (e.target === this) closePreview();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closePreview();
+});
+</script>
+</body>
+</html>

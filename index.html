@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vaisiyaa Bday</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body {
+            height: 100%;
+        }
+        body {
+            font-family: 'Lato', sans-serif;
+            background: #fff0f5;
+            min-height: 100%;
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            -webkit-overflow-scrolling: touch;
+        }
+        .petals { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .petal { position: absolute; opacity: 0; animation: floatDown linear infinite; }
+        @keyframes floatDown {
+            0%   { transform: translateY(-40px) rotate(0deg); opacity: 0; }
+            10%  { opacity: 0.6; }
+            90%  { opacity: 0.4; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+        .card {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 60px 50px;
+            max-width: 560px;
+            width: 90%;
+            margin: auto;
+        }
+        .eyebrow {
+            font-weight: 300;
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #ffaac8;
+            margin-bottom: 16px;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 6vw, 52px);
+            color: #c4356b;
+            line-height: 1.2;
+            margin-bottom: 60px;
+        }
+        h1 em { font-style: italic; color: #ff4d88; }
+        .subtitle { font-size: 15px; color: #c47; font-weight: 300; margin-bottom: 80px; opacity: 0.8; }
+        .countdown { display: flex; justify-content: center; gap: 8px; margin-bottom: 50px; flex-wrap: nowrap; align-items: center; width: 100%; }
+        .unit { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .tile {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(255,77,136,0.12);
+            width: clamp(60px, 18vw, 86px); height: clamp(60px, 18vw, 86px);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .tile span {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(24px, 7vw, 38px); font-weight: 700;
+            color: #ff4d88; line-height: 1;
+        }
+        .label { font-size: clamp(9px, 2.2vw, 11px); letter-spacing: 2px; text-transform: uppercase; color: #ffaac8; }
+        .colon { font-family: 'Playfair Display', serif; font-size: clamp(20px, 5vw, 36px); color: #ffb6c9; margin-bottom: 20px; }
+        .lock-msg {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            background: rgba(255,180,210,0.2);
+            border: 1px solid rgba(255,150,190,0.35);
+            border-radius: 50px; padding: 12px 28px;
+            color: #c4356b; font-size: 14px; font-weight: 300;
+        }
+        .enter-btn {
+            display: none;
+            background: linear-gradient(135deg, #ff4d88, #ff85aa);
+            color: #fff; border: none;
+            padding: 16px 48px; border-radius: 50px;
+            font-family: 'Lato', sans-serif; font-size: 16px;
+            letter-spacing: 2px; text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(255,77,136,0.35);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+        }
+        .enter-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,77,136,0.45); }
+        .unlock-msg {
+            display: none;
+            font-family: 'Playfair Display', serif;
+            font-style: italic; font-size: 18px;
+            color: #ff4d88; margin-bottom: 28px;
+        }
+        .date-hint { margin-top: 28px; font-size: 12px; color: #ffaac8; letter-spacing: 1px; }
+
+
+    </style>
+</head>
+<body>
+
+<div class="petals" id="petals"></div>
+
+<div class="card">
+    <h1>Something <em>wonderful</em><br>is waiting for you</h1>
+
+    <div class="countdown">
+        <div class="unit">
+            <div class="tile"><span id="days">--</span></div>
+            <span class="label">Days</span>
+        </div>
+        <div class="colon">:</div>
+        <div class="unit">
+            <div class="tile"><span id="hours">--</span></div>
+            <span class="label">Hours</span>
+        </div>
+        <div class="colon">:</div>
+        <div class="unit">
+            <div class="tile"><span id="minutes">--</span></div>
+            <span class="label">Minutes</span>
+        </div>
+        <div class="colon">:</div>
+        <div class="unit">
+            <div class="tile"><span id="seconds">--</span></div>
+            <span class="label">Seconds</span>
+        </div>
+    </div>
+
+    <div class="lock-msg" id="lockMsg">🔒 Come back on October 22 to open your surprises</div>
+    <p class="unlock-msg" id="unlockMsg">Your surprises are ready! 🎉</p>
+    <a class="enter-btn" id="enterBtn" href="homepage.html">Open Surprises ✨</a>
+    
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const TARGET = new Date('2026-09-27T00:00:00');
+    function pad(n) { return String(n).padStart(2, '0'); }
+    const els = { days: document.getElementById('days'), hours: document.getElementById('hours'), minutes: document.getElementById('minutes'), seconds: document.getElementById('seconds') };
+    let prev = {};
+    let unlocked = false;
+    let timer = null;
+
+    function unlock() {
+        if (unlocked) return;
+        unlocked = true;
+        if (timer) clearInterval(timer);
+        ['days','hours','minutes','seconds'].forEach(k => els[k].textContent = '00');
+        document.getElementById('lockMsg').style.display = 'none';
+        document.getElementById('unlockMsg').style.display = 'block';
+        document.getElementById('enterBtn').style.display = 'inline-block';
+    }
+
+    function tick() {
+        const diff = TARGET - new Date();
+        if (diff <= 0) { unlock(); return; }
+        const vals = {
+            days: pad(Math.floor(diff / 86400000)),
+            hours: pad(Math.floor((diff % 86400000) / 3600000)),
+            minutes: pad(Math.floor((diff % 3600000) / 60000)),
+            seconds: pad(Math.floor((diff % 60000) / 1000))
+        };
+        for (const key of ['days','hours','minutes','seconds']) {
+            if (vals[key] !== prev[key]) {
+                els[key].textContent = vals[key];
+                prev[key] = vals[key];
+            }
+        }
+    }
+
+    tick();
+    timer = setInterval(tick, 1000);
+
+    const petalContainer = document.getElementById('petals');
+    const symbols = ['🌸','🌹','🌷','🪷','💐'];
+    for (let i = 0; i < 18; i++) {
+        const p = document.createElement('div');
+        p.className = 'petal';
+        p.textContent = symbols[i % symbols.length];
+        p.style.left = (Math.random() * 100) + 'vw';
+        p.style.fontSize = (14 + Math.random() * 14) + 'px';
+        p.style.animationDuration = (10 + Math.random() * 4) + 's';
+        p.style.animationDelay = (i * (18 / 18)) + 's';
+        petalContainer.appendChild(p);
+    }
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

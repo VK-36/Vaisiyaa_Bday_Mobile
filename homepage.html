@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>For Vaisiyaa 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Caveat:wght@400;600&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0c0a08;
+  --gold: #c9a96e;
+  --gold-light: #e8cc8a;
+  --gold-faint: rgba(201,169,110,0.12);
+  --rose: #c06878;
+  --rose-soft: #e8899a;
+  --cream: #fdfaf4;
+  --ink-soft: rgba(255,255,255,0.5);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 20%, rgba(192,104,120,0.07) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 80%, rgba(201,169,110,0.07) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 50%, rgba(201,169,110,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: fixed;
+  border-radius: 50%;
+  background: var(--gold);
+  pointer-events: none;
+  z-index: 1;
+  animation: drift linear infinite;
+  opacity: 0;
+}
+@keyframes drift {
+  0%   { transform: translateY(100vh); opacity: 0; }
+  10%  { opacity: 0.3; }
+  90%  { opacity: 0.07; }
+  100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+.wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: max(52px, env(safe-area-inset-top)) 20px max(80px, env(safe-area-inset-bottom));
+}
+
+/* ── HEADER ── */
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: slideDown 0.9s cubic-bezier(.22,1,.36,1) 0.2s forwards;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.header-tag {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(201,169,110,0.5);
+  margin-bottom: 14px;
+}
+
+.header-title {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(30px, 9vw, 52px);
+  color: var(--cream);
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+}
+
+.header-title span {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--gold-light);
+}
+
+.header-sub {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+/* ── CARDS ── */
+.cards {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+}
+
+.env-card {
+  width: 100%;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  opacity: 0;
+  transform: translateY(28px);
+  animation: riseUp 0.65s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+.env-card:nth-child(1)  { animation-delay: 0.45s; }
+.env-card:nth-child(3)  { animation-delay: 0.58s; }
+.env-card:nth-child(5)  { animation-delay: 0.71s; }
+.env-card:nth-child(7)  { animation-delay: 0.84s; }
+.env-card:nth-child(9)  { animation-delay: 0.97s; }
+.env-card:nth-child(11) { animation-delay: 1.10s; }
+.env-card:nth-child(13) { animation-delay: 1.23s; }
+
+@keyframes riseUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.env-outer {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(201,169,110,0.15);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.env-outer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(201,169,110,0.05) 0%, rgba(192,104,120,0.04) 100%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.env-card:hover .env-outer { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(201,169,110,0.2); }
+.env-card:hover .env-outer::before { opacity: 1; }
+.env-card:active .env-outer { transform: scale(0.98); }
+
+.env-icon-wrap {
+  flex-shrink: 0;
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+}
+
+.env-text { flex: 1; min-width: 0; }
+
+.env-num {
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(201,169,110,0.4);
+  margin-bottom: 3px;
+}
+
+.env-title {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(17px, 4.8vw, 21px);
+  color: var(--cream);
+  line-height: 1.2;
+}
+
+.env-desc {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+  font-weight: 300;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.env-arrow {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,169,110,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  color: rgba(201,169,110,0.5);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s, color 0.2s;
+}
+.env-card:hover .env-arrow {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--bg);
+  transform: translateX(3px);
+}
+
+/* ── FINALE ── */
+.env-card.finale .env-outer {
+  background: linear-gradient(135deg, rgba(245,200,66,0.08) 0%, rgba(192,104,120,0.06) 100%);
+  border-color: rgba(245,200,66,0.25);
+  box-shadow: 0 0 30px rgba(245,200,66,0.06);
+}
+.finale .env-num   { color: rgba(245,200,66,0.45); }
+.finale .env-title { color: var(--gold-light); }
+.finale .env-desc  { color: rgba(245,200,66,0.35); }
+.finale .env-arrow { border-color: rgba(245,200,66,0.3); color: var(--gold); }
+.env-card.finale:hover .env-outer { box-shadow: 0 10px 40px rgba(245,200,66,0.15), 0 0 0 1px rgba(245,200,66,0.25); }
+.env-card.finale:hover .env-arrow { background: var(--gold); border-color: var(--gold); color: var(--bg); }
+
+.wax-seal {
+  position: absolute;
+  top: -13px; right: 18px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #f5c842, #c8981e);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  box-shadow: 0 3px 10px rgba(245,200,66,0.45);
+  z-index: 5;
+}
+
+/* ── SEPARATOR ── */
+.sep {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  width: 100%;
+  opacity: 0;
+  animation: riseUp 0.5s ease forwards;
+}
+.sep:nth-of-type(2)  { animation-delay: 0.52s; }
+.sep:nth-of-type(4)  { animation-delay: 0.65s; }
+.sep:nth-of-type(6)  { animation-delay: 0.78s; }
+.sep:nth-of-type(8)  { animation-delay: 0.91s; }
+.sep:nth-of-type(10) { animation-delay: 1.04s; }
+.sep:nth-of-type(12) { animation-delay: 1.17s; }
+
+.sep-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,169,110,0.12), transparent); }
+.sep-dot  { width: 3px; height: 3px; border-radius: 50%; background: rgba(201,169,110,0.2); }
+
+/* ── FOOTER ── */
+.footer-note {
+  margin-top: 48px;
+  text-align: center;
+  opacity: 0;
+  animation: riseUp 0.7s ease 1.5s forwards;
+}
+.footer-note p     { font-family: 'Caveat', cursive; font-size: 18px; color: var(--gold); margin-bottom: 5px; }
+.footer-note small { font-size: 11px; color: rgba(201,169,110,0.3); letter-spacing: 1.5px; }
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<div class="wrapper">
+
+  <div class="header">
+    <div class="header-title">Happy Birthday,<br><span>Vaisiyaa 🌸</span></div>
+    <div class="header-sub">6 surprises, made just for you — open them one by one 🤍</div>
+  </div>
+
+  <div class="cards">
+
+    <!-- S1 -->
+    <a href="surprise1.html" class="env-card">
+      <div class="env-outer">
+        <div class="env-icon-wrap" style="background:rgba(255,107,157,0.1);">🎁</div>
+        <div class="env-text">
+          <div class="env-num">Surprise 01</div>
+          <div class="env-title">Open me first</div>
+          <div class="env-desc">your journey begins here</div>
+        </div>
+        <div class="env-arrow">›</div>
+      </div>
+    </a>
+
+    <div class="sep"><div class="sep-line"></div><div class="sep-dot"></div><div class="sep-line"></div></div>
+
+    <!-- S2 -->
+    <a href="surprise4.html" class="env-card">
+      <div class="env-outer">
+        <div class="env-icon-wrap" style="background:rgba(96,208,255,0.08);">🎁</div>
+        <div class="env-text">
+          <div class="env-num">Surprise 02</div>
+          <div class="env-title">Something for you</div>
+          <div class="env-desc">tap to unwrap</div>
+        </div>
+        <div class="env-arrow">›</div>
+      </div>
+    </a>
+
+    <div class="sep"><div class="sep-line"></div><div class="sep-dot"></div><div class="sep-line"></div></div>
+
+    <!-- S3 -->
+    <a href="surprise5.html" class="env-card">
+      <div class="env-outer">
+        <div class="env-icon-wrap" style="background:rgba(192,132,252,0.1);">🎁</div>
+        <div class="env-text">
+          <div class="env-num">Surprise 03</div>
+          <div class="env-title">Keep going</div>
+          <div class="env-desc">tap to unwrap</div>
+        </div>
+        <div class="env-arrow">›</div>
+      </div>
+    </a>
+
+    <div class="sep"><div class="sep-line"></div><div class="sep-dot"></div><div class="sep-line"></div></div>
+
+    <!-- S4 -->
+    <a href="surprise6.html" class="env-card">
+      <div class="env-outer">
+        <div class="env-icon-wrap" style="background:rgba(245,200,66,0.08);">🎁</div>
+        <div class="env-text">
+          <div class="env-num">Surprise 04</div>
+          <div class="env-title">You're doing great</div>
+          <div class="env-desc">tap to unwrap</div>
+        </div>
+        <div class="env-arrow">›</div>
+      </div>
+    </a>
+
+    <div class="sep"><div class="sep-line"></div><div class="sep-dot"></div><div class="sep-line"></div></div>
+
+    <!-- S5 -->
+    <a href="surprise2.html" class="env-card">
+      <div class="env-outer">
+        <div class="env-icon-wrap" style="background:rgba(201,169,110,0.1);">🎁</div>
+        <div class="env-text">
+          <div class="env-num">Surprise 05</div>
+          <div class="env-title">Almost there</div>
+          <div class="env-desc">tap to unwrap</div>
+        </div>
+        <div class="env-arrow">›</div>
+      </div>
+    </a>
+
+    <div class="sep"><div class="sep-line"></div><div class="sep-dot"></div><div class="sep-line"></div></div>
+
+    <!-- S6 FINALE -->
+    <a href="surprise10.html" class="env-card finale">
+      <div class="wax-seal">👑</div>
+      <div class="env-outer">
+        <div class="env-icon-wrap" style="background:rgba(245,200,66,0.08);">🎁</div>
+        <div class="env-text">
+          <div class="env-num">Surprise 06</div>
+          <div class="env-title">The Last One 👑</div>
+          <div class="env-desc">save the best for last</div>
+        </div>
+        <div class="env-arrow">›</div>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="footer-note">
+    <p>Made with all my heart 🤍</p>
+    <small>just for you, always</small>
+  </div>
+
+</div>
+
+<script>
+const pc = document.getElementById('particles');
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const sz = Math.random() * 2 + 1;
+  p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}vw;animation-duration:${14+Math.random()*10}s;animation-delay:${Math.random()*10}s;`;
+  pc.appendChild(p);
+}
+</script>
+
+</body>
+</html>
